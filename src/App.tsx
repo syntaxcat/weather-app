@@ -30,6 +30,7 @@ function App() {
     <Box
       sx={{
         display: "flex",
+        flexDirection: "column",
         width: "100%",
         height: "100vh",
         alignItems: "center",
@@ -42,6 +43,20 @@ function App() {
     >
       <Header>
         <div className={classes.taskName}>weather task</div>
+        <div className={classes.toggleDarkMode}>
+          {theme.palette.mode} mode
+          <IconButton
+            sx={{ml: 1}}
+            onClick={colorMode.toggleColorMode}
+            color="inherit"
+          >
+            {theme.palette.mode === "dark" ? (
+              <Brightness7Icon />
+            ) : (
+              <Brightness4Icon />
+            )}
+          </IconButton>
+        </div>
         <div className={classes.navLinks}>
           <Box sx={{width: "100%"}}>
             <Box sx={{borderBottom: 1, borderColor: "divider"}}>
@@ -53,21 +68,11 @@ function App() {
           </Box>
         </div>
       </Header>
+
+      <Outlet />
+
       {value === 0 && <HomePage />}
       {value === 1 && <FavoritesPage />}
-      <Outlet />
-      {theme.palette.mode} mode
-      <IconButton
-        sx={{ml: 1}}
-        onClick={colorMode.toggleColorMode}
-        color="inherit"
-      >
-        {theme.palette.mode === "dark" ? (
-          <Brightness7Icon />
-        ) : (
-          <Brightness4Icon />
-        )}
-      </IconButton>
     </Box>
   )
 }
