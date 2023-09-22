@@ -40,3 +40,20 @@
 .read-the-docs {
   color: #888;
 }
+
+.navLinks {
+  margin-right: 1rem;
+  gap: 1rem;
+  display: flex;
+  align-self: center;
+}
+
+.navLinks li {
+  padding: 10px;
+}
+
+.taskName {
+  margin-left: 1rem;
+  display: flex;
+  align-self: center;
+}
