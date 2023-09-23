@@ -17,8 +17,6 @@ import FavoritesPage from "./components/Pages/FavoritesPage"
 const ColorModeContext = createContext({toggleColorMode: () => {}})
 
 function App() {
-  const [value, setValue] = useState(0)
-
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
   }
@@ -60,7 +58,7 @@ function App() {
         <div className={classes.navLinks}>
           <Box sx={{width: "100%", marginRight: "1rem"}}>
             <Box sx={{borderBottom: 1, borderColor: "divider"}}>
-              <Tabs value={value} onChange={handleChange}>
+              <Tabs onChange={handleChange}>
                 <Tab component={Link} to="/Home" label="Home" />
                 <Tab component={Link} to="/Favorites" label="Favorites" />
               </Tabs>
@@ -68,11 +66,7 @@ function App() {
           </Box>
         </div>
       </Header>
-
       <Outlet />
-
-      {value === 0 && <HomePage />}
-      {value === 1 && <FavoritesPage />}
     </Box>
   )
 }
@@ -102,10 +96,11 @@ export default function ToggleColorMode() {
     <>
       <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
-          <App />
           <Routes>
-            <Route path="/Home" element={<HomePage />} />
-            <Route path="/Favorites" element={<FavoritesPage />} />
+            <Route path="/" element={<App />}>
+              <Route path="Home" element={<HomePage />} />
+              <Route path="Favorites" element={<FavoritesPage />} />
+            </Route>
           </Routes>
         </ThemeProvider>
       </ColorModeContext.Provider>

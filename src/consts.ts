@@ -150,3 +150,30 @@ export const CITIES = [
     }
   }
 ]
+
+export const CURRENT_WEATHER = [
+  {
+    LocalObservationDateTime: "2023-09-23T20:13:00+03:00",
+    EpochTime: 1695489180,
+    WeatherText: "Clear",
+    WeatherIcon: 33,
+    HasPrecipitation: false,
+    PrecipitationType: null,
+    IsDayTime: false,
+    Temperature: {
+      Metric: {
+        Value: 29.3,
+        Unit: "C",
+        UnitType: 17
+      },
+      Imperial: {
+        Value: 85,
+        Unit: "F",
+        UnitType: 18
+      }
+    },
+    MobileLink:
+      "http://www.accuweather.com/en/il/tel-aviv/215854/current-weather/215854?lang=en-us",
+    Link: "http://www.accuweather.com/en/il/tel-aviv/215854/current-weather/215854?lang=en-us"
+  }
+]

@@ -2,10 +2,11 @@ import SearchLocation from "../Locations/SearchLocation"
 import WeatherDetails from "../Weather/WeatherDetails"
 
 const HomePage = () => {
+  const cityKey = "215854"
   return (
     <>
       <SearchLocation />
-      <WeatherDetails details={{}} />
+      <WeatherDetails cityKey={cityKey} />
     </>
   )
 }

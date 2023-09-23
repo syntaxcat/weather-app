@@ -11,7 +11,7 @@ interface City {
   country: string
 }
 
-const apiKey = "Rstic0VBtv4jrY9KbUe2o4TzgybGMMlG"
+const apiKey = "ppmafVEHCWeRj5Ggxuo9BbYI2kBBZenq"
 const END_POINT =
   "https://dataservice.accuweather.com/locations/v1/cities/autocomplete"
 
@@ -47,7 +47,6 @@ const SearchLocation = () => {
         console.log(userInput)
       })
       .catch((error) => console.error("Error fetching locations:", error))
-    console.log("FETCHING")
   }, [])
 
   useEffect(() => {
@@ -97,9 +96,9 @@ const SearchLocation = () => {
                 <LocationOnIcon sx={{color: "text.secondary"}} />
               </Grid>
               {option.name}
-              <Typography variant="body2" color="text.secondary">
+              {/* <Typography variant="body2" color="text.secondary">
                 {option.country}
-              </Typography>
+              </Typography> */}
             </Grid>
           </li>
         )
