@@ -1,7 +1,7 @@
 import React from "react"
 
 const WeatherDetails = (props: {details: any}) => {
-  console.log(props)
+  // console.log(props)
   return <></>
 }
 

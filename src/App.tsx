@@ -58,7 +58,7 @@ function App() {
           </IconButton>
         </div>
         <div className={classes.navLinks}>
-          <Box sx={{width: "100%"}}>
+          <Box sx={{width: "100%", marginRight: "1rem"}}>
             <Box sx={{borderBottom: 1, borderColor: "divider"}}>
               <Tabs value={value} onChange={handleChange}>
                 <Tab component={Link} to="/Home" label="Home" />
