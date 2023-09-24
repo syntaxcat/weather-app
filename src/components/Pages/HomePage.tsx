@@ -1,4 +1,4 @@
-import {useState, useCallback} from "react"
+import {useState} from "react"
 import SearchLocation from "../Locations/SearchLocation"
 import WeatherDetails from "../Weather/WeatherDetails"
 

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react"
-import {CURRENT_WEATHER} from "../../consts"
+import {fiveForecastsDaily} from "../../consts"
 
 interface CurrentWeatherConditions {
   WeatherText: string
@@ -20,18 +20,45 @@ interface WeatherDetailsProps {
   locationName: string
 }
 
-const apiKey = "bCxuF05QbURWBb6Opxw9TaZ6wZ1bpuRK"
+interface dailyForecast {
+  Date: string
+  Temperature: {
+    Minimum: {
+      Value: number
+      Unit: string
+    }
+    Maximum: {
+      Value: number
+      Unit: string
+    }
+  }
+}
+
+const apiKey = "wRman2opJL9iXtkGMrF7VHfLtrPfGayV"
 const END_POINT = "http://dataservice.accuweather.com/currentconditions/v1/"
 
 const WeatherDetails = (props: WeatherDetailsProps) => {
   const [currentConditions, setCurrentConditions] =
     useState<CurrentWeatherConditions | null>(null)
 
+  // const [options, setOptions] = useState<readonly dailyForecast[]>([])
+  const [dailyForecasts, setDailyForecasts] = useState<dailyForecast[]>([])
+
+  //CURRENT_WEATHER -
   // const getData = () => {
   //   setCurrentConditions(() => {
   //     return CURRENT_WEATHER
   //   })
   // }
+
+  // 5 day forecast daily-
+  const getData = () => {
+    setDailyForecasts(fiveForecastsDaily.DailyForecasts)
+  }
+
+  useEffect(() => {
+    getData()
+  }, [])
 
   useEffect(() => {
     // getData()
@@ -69,6 +96,25 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
             Temperature (Imperial):{" "}
             {currentConditions.Temperature.Imperial.Value}{" "}
             {currentConditions.Temperature.Imperial.Unit}
+          </div>
+          <div>
+            <div>5 forecasts daily</div>
+            {dailyForecasts.map((forecast, index) => (
+              <div key={index}>
+                <div>Date: {forecast.Date}</div>
+                <div>
+                  Temperature (Minimum): {forecast.Temperature.Minimum.Value}{" "}
+                  {forecast.Temperature.Minimum.Unit}
+                </div>
+                <div>
+                  Temperature (Maximum): {forecast.Temperature.Maximum.Value}{" "}
+                  {forecast.Temperature.Maximum.Unit}
+                </div>
+                {/* <div>Day Icon Phrase: {forecast.Day.IconPhrase}</div>
+                <div>Night Icon Phrase: {forecast.Night.IconPhrase}</div> */}
+                <div>----------------------</div>
+              </div>
+            ))}
           </div>
         </div>
       )}
