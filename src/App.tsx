@@ -17,10 +17,10 @@ import FavoritesPage from "./components/Pages/FavoritesPage"
 const ColorModeContext = createContext({toggleColorMode: () => {}})
 
 function App() {
-  // const [value, setValue] = React.useState(0)
+  const [someValue, setSomeValue] = useState(0)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue)
+    setSomeValue(newValue)
   }
 
   const theme = useTheme()
@@ -60,7 +60,7 @@ function App() {
         <div className={classes.navLinks}>
           <Box sx={{width: "100%", marginRight: "1rem"}}>
             <Box sx={{borderBottom: 1, borderColor: "divider"}}>
-              <Tabs onChange={handleChange}>
+              <Tabs value={someValue} onChange={handleChange}>
                 <Tab component={Link} to="/Home" label="Home" />
                 <Tab component={Link} to="/Favorites" label="Favorites" />
               </Tabs>
