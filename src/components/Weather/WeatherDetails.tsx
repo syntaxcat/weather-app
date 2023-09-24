@@ -35,7 +35,7 @@ interface WeatherDetailsProps {
   locationName: string
 }
 
-interface dailyForecast {
+interface DailyForecast {
   Date: string
   Temperature: {
     Minimum: {
@@ -49,14 +49,46 @@ interface dailyForecast {
   }
 }
 
-const apiKey = "zsQG2rPKc0wYYP1cyWnSXcnaQm3ErT6i"
+interface DailyForecastsResponse {
+  DailyForecasts: DailyForecast[]
+}
+
+const apiKey = "c9NAp7OEipx15gTXOkkGVNn0usKsUsLA"
 const END_POINT = "http://dataservice.accuweather.com/currentconditions/v1/"
+
+const END_POINT_5 =
+  "http://dataservice.accuweather.com/forecasts/v1/daily/5day/"
 
 const WeatherDetails = (props: WeatherDetailsProps) => {
   const [currentConditions, setCurrentConditions] =
     useState<CurrentWeatherConditions | null>(null)
 
-  const [dailyForecasts, setDailyForecasts] = useState<dailyForecast[]>([])
+  const [dailyForecasts, setDailyForecasts] = useState<DailyForecast[]>([])
+
+  useEffect(() => {
+    // getData()
+    // if (!props.locationName) {
+    //   return
+    // }
+    fetch(`${END_POINT_5}/${props.selectedCityKey}?apikey=${apiKey}`)
+      .then((response) => {
+        return response.json()
+      })
+      .then((data: DailyForecastsResponse) => {
+        console.log("myData", data)
+        const relatedLocationForecasts = data[0]
+        // setDailyForecasts(relatedLocationForecasts)
+        setDailyForecasts(data.DailyForecasts)
+        // if (Array.isArray(data) && data.length > 0 && data[0].DailyForecasts) {
+        //   const relatedLocationForecasts = data[0].DailyForecasts
+        //   setDailyForecasts(relatedLocationForecasts)
+        // } else {
+        //   console.error("Invalid data format for daily forecasts.")
+        // }
+      })
+      .catch((error) => console.error("Error fetching daily forecasts:", error))
+    // console.log("FETCHING")
+  }, [props.selectedCityKey, props.locationName])
 
   //CURRENT_WEATHER -
   // const getData = () => {
@@ -66,16 +98,16 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
   // }
 
   // 5 day forecast daily-
-  const getData = () => {
-    setDailyForecasts(fiveForecastsDaily.DailyForecasts)
-  }
+  // const getData = () => {
+  //   setDailyForecasts(fiveForecastsDaily.DailyForecasts)
+  // }
 
   // useEffect(() => {
   //   getData()
   // }, [])
 
   useEffect(() => {
-    getData()
+    // getData()
     if (!props.locationName) {
       return
     }
@@ -86,14 +118,14 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
         return response.json()
       })
       .then((data) => {
-        console.log(data)
+        // console.log(data)
         const foundWeatherConditions = data[0]
         setCurrentConditions(foundWeatherConditions)
       })
       .catch((error) =>
         console.error("Error fetching weather conditions:", error)
       )
-    console.log("FETCHING")
+    // console.log("FETCHING")
   }, [props.selectedCityKey, props.locationName])
 
   const getDayOfWeek = (dateString: string) => {
@@ -123,51 +155,55 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
           </div>
 
           <div className={classes.dailyFiveForecasts}>
-            {dailyForecasts.map((forecast, index) => (
-              // <div key={index} className={classes.daily}>
-              //   <div>Date: {forecast.Date}</div>
-              //   <div>
-              //     Temperature (Minimum): {forecast.Temperature.Minimum.Value}{" "}
-              //     {forecast.Temperature.Minimum.Unit}
-              //   </div>
-              //   <div>
-              //     Temperature (Maximum): {forecast.Temperature.Maximum.Value}{" "}
-              //     {forecast.Temperature.Maximum.Unit}
-              //   </div>
-              // </div>
-              <Card sx={{minWidth: 275}} key={index}>
-                <div className={classes.daily}>
-                  <CardContent>
-                    <Typography
-                      component="span"
-                      sx={{fontSize: 14}}
-                      color="text.secondary"
-                      gutterBottom
-                    >
-                      <div>Date: {getDayOfWeek(forecast.Date)}</div>
-                    </Typography>
-                    {/* <Typography variant="h5" component="div">
+            {dailyForecasts.length > 0 ? (
+              dailyForecasts.map((forecast, index) => (
+                // <div key={index} className={classes.daily}>
+                //   <div>Date: {forecast.Date}</div>
+                //   <div>
+                //     Temperature (Minimum): {forecast.Temperature.Minimum.Value}{" "}
+                //     {forecast.Temperature.Minimum.Unit}
+                //   </div>
+                //   <div>
+                //     Temperature (Maximum): {forecast.Temperature.Maximum.Value}{" "}
+                //     {forecast.Temperature.Maximum.Unit}
+                //   </div>
+                // </div>
+                <Card sx={{minWidth: 275}} key={index}>
+                  <div className={classes.daily}>
+                    <CardContent>
+                      <Typography
+                        component="span"
+                        sx={{fontSize: 14}}
+                        color="text.secondary"
+                        gutterBottom
+                      >
+                        <div>Date: {getDayOfWeek(forecast.Date)}</div>
+                      </Typography>
+                      {/* <Typography variant="h5" component="div">
                       <div>
                         Temperature (Minimum):{" "}
                         {forecast.Temperature.Minimum.Value}{" "}
                         {forecast.Temperature.Minimum.Unit}
                       </div>
                     </Typography> */}
-                    <Typography
-                      component="span"
-                      sx={{mb: 1.5}}
-                      color="text.secondary"
-                    >
-                      <div>
-                        Temperature (Maximum):{" "}
-                        {forecast.Temperature.Maximum.Value}{" "}
-                        {forecast.Temperature.Maximum.Unit}
-                      </div>
-                    </Typography>
-                  </CardContent>
-                </div>
-              </Card>
-            ))}
+                      <Typography
+                        component="span"
+                        sx={{mb: 1.5}}
+                        color="text.secondary"
+                      >
+                        <div>
+                          Temperature (Maximum):{" "}
+                          {forecast.Temperature.Maximum.Value}{" "}
+                          {forecast.Temperature.Maximum.Unit}
+                        </div>
+                      </Typography>
+                    </CardContent>
+                  </div>
+                </Card>
+              ))
+            ) : (
+              <p>Loading daily forecasts...</p>
+            )}
           </div>
         </div>
       )}

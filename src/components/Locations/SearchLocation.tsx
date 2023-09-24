@@ -12,7 +12,7 @@ interface City {
   country: string
 }
 
-const apiKey = "zsQG2rPKc0wYYP1cyWnSXcnaQm3ErT6i"
+const apiKey = "c9NAp7OEipx15gTXOkkGVNn0usKsUsLA"
 const END_POINT =
   "https://dataservice.accuweather.com/locations/v1/cities/autocomplete"
 
@@ -54,7 +54,7 @@ const SearchLocation = (props: SearchLocationProps) => {
           }
         })
         setOptions(foundLocations)
-        console.log(userInput)
+        // console.log(userInput)
       })
       .catch((error) => console.error("Error fetching locations:", error))
   }, [])
@@ -77,7 +77,7 @@ const SearchLocation = (props: SearchLocationProps) => {
   const locationChangeHandler = (event: any, newValue: City | null) => {
     setValue(newValue)
     if (newValue) {
-      console.log("IFFF", newValue)
+      // console.log("IFFF", newValue)
       props.onLocationChange(newValue.name)
       // console.log("newValue.key", newValue.key)
       props.onSelectCityKey(newValue.key)
@@ -107,8 +107,8 @@ const SearchLocation = (props: SearchLocationProps) => {
         <TextField {...params} label="Add a location" fullWidth />
       )}
       renderOption={(props, option) => {
-        console.log("PROPS", props) // key: "Tokyo" == name , but we need *Key*
-        console.log("OPTION", option) // only name
+        // console.log("PROPS", props) // key: "Tokyo" == name , but we need *Key*
+        // console.log("OPTION", option) // only name
         return (
           <li {...props} key={option.key}>
             <Grid container alignItems="center">
