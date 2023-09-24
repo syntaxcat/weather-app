@@ -49,7 +49,7 @@ interface dailyForecast {
   }
 }
 
-const apiKey = "uVkGbUg6qcUsTejjcgVlTy0IlIf9KqAL"
+const apiKey = "zsQG2rPKc0wYYP1cyWnSXcnaQm3ErT6i"
 const END_POINT = "http://dataservice.accuweather.com/currentconditions/v1/"
 
 const WeatherDetails = (props: WeatherDetailsProps) => {
@@ -70,17 +70,17 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
     setDailyForecasts(fiveForecastsDaily.DailyForecasts)
   }
 
-  useEffect(() => {
-    getData()
-  }, [])
+  // useEffect(() => {
+  //   getData()
+  // }, [])
 
   useEffect(() => {
-    // getData()
+    getData()
     if (!props.locationName) {
       return
     }
     fetch(
-      `${END_POINT}/${props.cityKey}?apikey=${apiKey}&q=${props.locationName}`
+      `${END_POINT}/${props.selectedCityKey}?apikey=${apiKey}&q=${props.locationName}`
     )
       .then((response) => {
         return response.json()
@@ -94,7 +94,7 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
         console.error("Error fetching weather conditions:", error)
       )
     console.log("FETCHING")
-  }, [props.cityKey, props.locationName])
+  }, [props.selectedCityKey, props.locationName])
 
   const getDayOfWeek = (dateString: string) => {
     const date = new Date(dateString)
