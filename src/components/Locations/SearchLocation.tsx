@@ -12,7 +12,7 @@ interface City {
   country: string
 }
 
-const apiKey = "0GLvHGTpFkbLVb1o083WSrCoyDprbVnA"
+const apiKey = "EK3eJ4rSQJJEGA17Vx3vbC1PVwGcNpFz"
 const END_POINT =
   "https://dataservice.accuweather.com/locations/v1/cities/autocomplete"
 
@@ -54,7 +54,6 @@ const SearchLocation = (props: SearchLocationProps) => {
           }
         })
         setOptions(foundLocations)
-        // console.log(userInput)
       })
       .catch((error) => console.error("Error fetching locations:", error))
   }, [])
@@ -77,9 +76,7 @@ const SearchLocation = (props: SearchLocationProps) => {
   const locationChangeHandler = (event: any, newValue: City | null) => {
     setValue(newValue)
     if (newValue) {
-      // console.log("IFFF", newValue)
       props.onLocationChange(newValue.name)
-      // console.log("newValue.key", newValue.key)
       props.onSelectCityKey(newValue.key)
     }
   }

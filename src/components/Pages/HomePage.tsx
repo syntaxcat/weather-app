@@ -12,7 +12,6 @@ const HomePage = () => {
   }
 
   const handleSelectedCityKey = (cityKey: string) => {
-    // console.log("HOMEPAGE -cityKey", cityKey)
     setSelectedCityKey(cityKey)
   }
 

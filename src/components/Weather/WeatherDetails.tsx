@@ -56,7 +56,7 @@ interface DailyForecastsResponse {
   DailyForecasts: DailyForecast[]
 }
 
-const apiKey = "0GLvHGTpFkbLVb1o083WSrCoyDprbVnA"
+const apiKey = "EK3eJ4rSQJJEGA17Vx3vbC1PVwGcNpFz"
 const END_POINT = "http://dataservice.accuweather.com/currentconditions/v1/"
 
 const END_POINT_5 =
@@ -69,6 +69,7 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
   const [dailyForecasts, setDailyForecasts] = useState<DailyForecast[]>([])
 
   const [favorite, setFavorite] = useState(false)
+  const [isFavorite, setIsFavorite] = useState(false)
 
   useEffect(() => {
     fetch(`${END_POINT_5}/${props.selectedCityKey}?apikey=${apiKey}`)
@@ -107,19 +108,37 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
     //fix typescript
   }
 
+  const favoriteHandler = (event: any) => {
+    console.log(event)
+    setFavorite(!favorite)
+    const favorites = JSON.parse(localStorage.getItem("Favorites"))
+
+    const isLocationFavorite = favorites.some(
+      (fav) => fav.ID === props.selectedCityKey
+    )
+    let updatedFavorites
+    if (isLocationFavorite) {
+      updatedFavorites = favorites.filter(
+        (fav) => fav.ID !== props.selectedCityKey
+      )
+    } else {
+      const newFavorite = {
+        ID: props.selectedCityKey,
+        name: props.locationName,
+        currentWeather: currentConditions.WeatherText
+      }
+      updatedFavorites = [newFavorite, ...favorites]
+    }
+    localStorage.setItem("Favorites", JSON.stringify(updatedFavorites))
+  }
+
   return (
     <>
       {currentConditions && (
         <div>
           <div className={classes.weatherCurrentConditions}>
             <Stack direction="row" spacing={1}>
-              <IconButton
-                aria-label="favorite"
-                onClick={(e) => {
-                  console.log("123")
-                  setFavorite(!favorite)
-                }}
-              >
+              <IconButton aria-label="favorite" onClick={favoriteHandler}>
                 {favorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
               </IconButton>
             </Stack>
