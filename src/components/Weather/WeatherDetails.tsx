@@ -17,9 +17,10 @@ interface CurrentWeatherConditions {
 
 interface WeatherDetailsProps {
   cityKey: string
+  locationName: string
 }
 
-const apiKey = "ppmafVEHCWeRj5Ggxuo9BbYI2kBBZenq"
+const apiKey = "bCxuF05QbURWBb6Opxw9TaZ6wZ1bpuRK"
 const END_POINT = "http://dataservice.accuweather.com/currentconditions/v1/"
 
 const WeatherDetails = (props: WeatherDetailsProps) => {
@@ -34,7 +35,12 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
 
   useEffect(() => {
     // getData()
-    fetch(`${END_POINT}/${props.cityKey}?apikey=${apiKey}`)
+    if (!props.locationName) {
+      return
+    }
+    fetch(
+      `${END_POINT}/${props.cityKey}?apikey=${apiKey}&q=${props.locationName}`
+    )
       .then((response) => {
         return response.json()
       })
@@ -47,12 +53,13 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
         console.error("Error fetching weather conditions:", error)
       )
     console.log("FETCHING")
-  }, [])
+  }, [props.cityKey, props.locationName])
 
   return (
     <>
       {currentConditions && (
         <div>
+          <div>Weather details for : {props.locationName} </div>
           <div>Weather Text: {currentConditions.WeatherText}</div>
           <div>
             Temperature (Metric): {currentConditions.Temperature.Metric.Value}{" "}
@@ -65,7 +72,6 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
           </div>
         </div>
       )}
-      <div>Weather details for cityKey: {props.cityKey} </div>
     </>
   )
 }

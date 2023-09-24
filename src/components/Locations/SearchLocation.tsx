@@ -11,11 +11,11 @@ interface City {
   country: string
 }
 
-const apiKey = "ppmafVEHCWeRj5Ggxuo9BbYI2kBBZenq"
+const apiKey = "bCxuF05QbURWBb6Opxw9TaZ6wZ1bpuRK"
 const END_POINT =
   "https://dataservice.accuweather.com/locations/v1/cities/autocomplete"
 
-const SearchLocation = () => {
+const SearchLocation = ({onLocationChange}) => {
   const [value, setValue] = useState<City | null>(null)
   const [inputValue, setInputValue] = useState("")
   const [options, setOptions] = useState<readonly City[]>([])
@@ -64,6 +64,15 @@ const SearchLocation = () => {
     }
   }, [inputValue])
 
+  const locationChangeHandler = (event: any, newValue: City | null) => {
+    setValue(newValue)
+    console.log("newValue", newValue)
+    if (newValue) {
+      console.log("newValue", newValue)
+      onLocationChange(newValue.name)
+    }
+  }
+
   return (
     <Autocomplete
       id="google-map-demo"
@@ -79,9 +88,7 @@ const SearchLocation = () => {
       isOptionEqualToValue={(option, value) => {
         return option.key === value.key
       }}
-      onChange={(event: any, newValue: City | null) => {
-        setValue(newValue)
-      }}
+      onChange={locationChangeHandler}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue)
       }}
