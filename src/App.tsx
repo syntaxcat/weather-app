@@ -33,6 +33,7 @@ function App() {
         flexDirection: "column",
         width: "100%",
         height: "100vh",
+        boxSizing: "border-box",
         alignItems: "center",
         justifyContent: "center",
         bgcolor: "background.default",

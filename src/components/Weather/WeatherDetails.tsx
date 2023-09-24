@@ -49,7 +49,7 @@ interface dailyForecast {
   }
 }
 
-const apiKey = "TuGp5T4ba7eVIuuJyhKBme4smlNl7tKO"
+const apiKey = "z3nuj35FyNSGdIOSPnAILT6UOf521Ac0"
 const END_POINT = "http://dataservice.accuweather.com/currentconditions/v1/"
 
 const WeatherDetails = (props: WeatherDetailsProps) => {
@@ -97,24 +97,30 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
     console.log("FETCHING")
   }, [props.cityKey, props.locationName])
 
-  // let dateObj = new Date()
-  // let day = dateObj.getUTCDate()
+  const getDayOfWeek = (dateString: string) => {
+    const date = new Date(dateString)
+    const options = {weekday: "long"}
+    return new Intl.DateTimeFormat("en-US", options).format(date)
+  }
 
   return (
     <>
       {currentConditions && (
         <div>
-          <div>Weather details for : {props.locationName} </div>
-          <div>Weather Text: {currentConditions.WeatherText}</div>
-          <div>
-            Temperature (Metric): {currentConditions.Temperature.Metric.Value}{" "}
-            {currentConditions.Temperature.Metric.Unit}
+          <div className={classes.weatherCurrentConditions}>
+            <div>Weather details for : {props.locationName} </div>
+            <div>Weather Text: {currentConditions.WeatherText}</div>
+            <div>
+              Temperature (Metric): {currentConditions.Temperature.Metric.Value}{" "}
+              {currentConditions.Temperature.Metric.Unit}
+            </div>
+            <div>
+              Temperature (Imperial):{" "}
+              {currentConditions.Temperature.Imperial.Value}{" "}
+              {currentConditions.Temperature.Imperial.Unit}
+            </div>
           </div>
-          <div>
-            Temperature (Imperial):{" "}
-            {currentConditions.Temperature.Imperial.Value}{" "}
-            {currentConditions.Temperature.Imperial.Unit}
-          </div>
+
           <div className={classes.dailyFiveForecasts}>
             {dailyForecasts.map((forecast, index) => (
               // <div key={index} className={classes.daily}>
@@ -136,15 +142,15 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
                       color="text.secondary"
                       gutterBottom
                     >
-                      <div>Date: {forecast.Date}</div>
+                      <div>Date: {getDayOfWeek(forecast.Date)}</div>
                     </Typography>
-                    <Typography variant="h5" component="div">
+                    {/* <Typography variant="h5" component="div">
                       <div>
                         Temperature (Minimum):{" "}
                         {forecast.Temperature.Minimum.Value}{" "}
                         {forecast.Temperature.Minimum.Unit}
                       </div>
-                    </Typography>
+                    </Typography> */}
                     <Typography sx={{mb: 1.5}} color="text.secondary">
                       <div>
                         Temperature (Maximum):{" "}
