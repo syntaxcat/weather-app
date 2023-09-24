@@ -7,14 +7,14 @@ import Card from "@mui/material/Card"
 import CardContent from "@mui/material/CardContent"
 import Typography from "@mui/material/Typography"
 
-const bull = (
-  <Box
-    component="span"
-    sx={{display: "inline-block", mx: "2px", transform: "scale(0.8)"}}
-  >
-    •
-  </Box>
-)
+// const bull = (
+//   <Box
+//     component="span"
+//     sx={{display: "inline-block", mx: "2px", transform: "scale(0.8)"}}
+//   >
+//     •
+//   </Box>
+// )
 
 interface CurrentWeatherConditions {
   WeatherText: string
@@ -49,14 +49,13 @@ interface dailyForecast {
   }
 }
 
-const apiKey = "z3nuj35FyNSGdIOSPnAILT6UOf521Ac0"
+const apiKey = "y7yuclKZ4EPkwW4fUTKTZiIwwRwBHXkA"
 const END_POINT = "http://dataservice.accuweather.com/currentconditions/v1/"
 
 const WeatherDetails = (props: WeatherDetailsProps) => {
   const [currentConditions, setCurrentConditions] =
     useState<CurrentWeatherConditions | null>(null)
 
-  // const [options, setOptions] = useState<readonly dailyForecast[]>([])
   const [dailyForecasts, setDailyForecasts] = useState<dailyForecast[]>([])
 
   //CURRENT_WEATHER -
@@ -134,10 +133,11 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
               //     {forecast.Temperature.Maximum.Unit}
               //   </div>
               // </div>
-              <Card sx={{minWidth: 275}}>
-                <div key={index} className={classes.daily}>
+              <Card sx={{minWidth: 275}} key={index}>
+                <div className={classes.daily}>
                   <CardContent>
                     <Typography
+                      component="span"
                       sx={{fontSize: 14}}
                       color="text.secondary"
                       gutterBottom
@@ -151,7 +151,11 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
                         {forecast.Temperature.Minimum.Unit}
                       </div>
                     </Typography> */}
-                    <Typography sx={{mb: 1.5}} color="text.secondary">
+                    <Typography
+                      component="span"
+                      sx={{mb: 1.5}}
+                      color="text.secondary"
+                    >
                       <div>
                         Temperature (Maximum):{" "}
                         {forecast.Temperature.Maximum.Value}{" "}
