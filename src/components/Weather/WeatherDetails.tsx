@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react"
 import {fiveForecastsDaily} from "../../consts"
+import classes from "./WeatherDetails.module.css"
 
 interface CurrentWeatherConditions {
   WeatherText: string
@@ -82,6 +83,13 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
     console.log("FETCHING")
   }, [props.cityKey, props.locationName])
 
+  // let dateObj = new Date()
+  // let month = dateObj.getUTCMonth() + 1 //months from 1-12
+  // let day = dateObj.getUTCDate()
+  // let year = dateObj.getUTCFullYear()
+
+  // newdate = year + "/" + month + "/" + day
+
   return (
     <>
       {currentConditions && (
@@ -97,10 +105,9 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
             {currentConditions.Temperature.Imperial.Value}{" "}
             {currentConditions.Temperature.Imperial.Unit}
           </div>
-          <div>
-            <div>5 forecasts daily</div>
+          <div className={classes.dailyFiveForecasts}>
             {dailyForecasts.map((forecast, index) => (
-              <div key={index}>
+              <div key={index} className={classes.daily}>
                 <div>Date: {forecast.Date}</div>
                 <div>
                   Temperature (Minimum): {forecast.Temperature.Minimum.Value}{" "}
@@ -112,7 +119,6 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
                 </div>
                 {/* <div>Day Icon Phrase: {forecast.Day.IconPhrase}</div>
                 <div>Night Icon Phrase: {forecast.Night.IconPhrase}</div> */}
-                <div>----------------------</div>
               </div>
             ))}
           </div>

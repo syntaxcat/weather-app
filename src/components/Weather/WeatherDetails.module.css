@@ -1,0 +1,10 @@
+.dailyFiveForecasts {
+  border: 1px solid salmon;
+  display: flex;
+  /* flex-direction: row; */
+}
+
+.daily {
+  display: flex;
+  flex-direction: column;
+}
