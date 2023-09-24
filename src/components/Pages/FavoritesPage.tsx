@@ -11,8 +11,8 @@ interface FavoritesPageProps {
 const FavoritesPage: React.FC<FavoritesPageProps> = ({favoriteLocations}) => {
   return (
     <>
+      <div>Favorite Locations:</div>
       <div>
-        <div>Favorite Locations:</div>
         {favoriteLocations.map((location) => (
           <div key={location.ID}>
             ID: {location.ID}, Name: {location.name}, Current Weather:{" "}

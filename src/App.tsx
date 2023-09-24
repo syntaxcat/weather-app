@@ -14,6 +14,12 @@ import Header from "./components/Layout/Header"
 import HomePage from "./components/Pages/HomePage"
 import FavoritesPage from "./components/Pages/FavoritesPage"
 
+const FavoritesPageWrapper = () => {
+  const favoriteLocations = JSON.parse(localStorage.getItem("Favorites"))
+
+  return <FavoritesPage favoriteLocations={favoriteLocations} />
+}
+
 const ColorModeContext = createContext({toggleColorMode: () => {}})
 
 function App() {
@@ -102,7 +108,7 @@ export default function ToggleColorMode() {
           <Routes>
             <Route path="/" element={<App />}>
               <Route path="Home" element={<HomePage />} />
-              <Route path="Favorites" element={<FavoritesPage />} />
+              <Route path="Favorites" element={<FavoritesPageWrapper />} />
             </Route>
           </Routes>
         </ThemeProvider>
