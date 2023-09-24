@@ -1,7 +1,7 @@
 .dailyFiveForecasts {
   border: 1px solid salmon;
   display: flex;
-  /* flex-direction: row; */
+  gap: 1rem;
 }
 
 .daily {

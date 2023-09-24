@@ -2,6 +2,20 @@ import React, {useState, useEffect} from "react"
 import {fiveForecastsDaily} from "../../consts"
 import classes from "./WeatherDetails.module.css"
 
+import Box from "@mui/material/Box"
+import Card from "@mui/material/Card"
+import CardContent from "@mui/material/CardContent"
+import Typography from "@mui/material/Typography"
+
+const bull = (
+  <Box
+    component="span"
+    sx={{display: "inline-block", mx: "2px", transform: "scale(0.8)"}}
+  >
+    •
+  </Box>
+)
+
 interface CurrentWeatherConditions {
   WeatherText: string
   Temperature: {
@@ -35,7 +49,7 @@ interface dailyForecast {
   }
 }
 
-const apiKey = "wRman2opJL9iXtkGMrF7VHfLtrPfGayV"
+const apiKey = "TuGp5T4ba7eVIuuJyhKBme4smlNl7tKO"
 const END_POINT = "http://dataservice.accuweather.com/currentconditions/v1/"
 
 const WeatherDetails = (props: WeatherDetailsProps) => {
@@ -84,11 +98,7 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
   }, [props.cityKey, props.locationName])
 
   // let dateObj = new Date()
-  // let month = dateObj.getUTCMonth() + 1 //months from 1-12
   // let day = dateObj.getUTCDate()
-  // let year = dateObj.getUTCFullYear()
-
-  // newdate = year + "/" + month + "/" + day
 
   return (
     <>
@@ -107,19 +117,44 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
           </div>
           <div className={classes.dailyFiveForecasts}>
             {dailyForecasts.map((forecast, index) => (
-              <div key={index} className={classes.daily}>
-                <div>Date: {forecast.Date}</div>
-                <div>
-                  Temperature (Minimum): {forecast.Temperature.Minimum.Value}{" "}
-                  {forecast.Temperature.Minimum.Unit}
+              // <div key={index} className={classes.daily}>
+              //   <div>Date: {forecast.Date}</div>
+              //   <div>
+              //     Temperature (Minimum): {forecast.Temperature.Minimum.Value}{" "}
+              //     {forecast.Temperature.Minimum.Unit}
+              //   </div>
+              //   <div>
+              //     Temperature (Maximum): {forecast.Temperature.Maximum.Value}{" "}
+              //     {forecast.Temperature.Maximum.Unit}
+              //   </div>
+              // </div>
+              <Card sx={{minWidth: 275}}>
+                <div key={index} className={classes.daily}>
+                  <CardContent>
+                    <Typography
+                      sx={{fontSize: 14}}
+                      color="text.secondary"
+                      gutterBottom
+                    >
+                      <div>Date: {forecast.Date}</div>
+                    </Typography>
+                    <Typography variant="h5" component="div">
+                      <div>
+                        Temperature (Minimum):{" "}
+                        {forecast.Temperature.Minimum.Value}{" "}
+                        {forecast.Temperature.Minimum.Unit}
+                      </div>
+                    </Typography>
+                    <Typography sx={{mb: 1.5}} color="text.secondary">
+                      <div>
+                        Temperature (Maximum):{" "}
+                        {forecast.Temperature.Maximum.Value}{" "}
+                        {forecast.Temperature.Maximum.Unit}
+                      </div>
+                    </Typography>
+                  </CardContent>
                 </div>
-                <div>
-                  Temperature (Maximum): {forecast.Temperature.Maximum.Value}{" "}
-                  {forecast.Temperature.Maximum.Unit}
-                </div>
-                {/* <div>Day Icon Phrase: {forecast.Day.IconPhrase}</div>
-                <div>Night Icon Phrase: {forecast.Night.IconPhrase}</div> */}
-              </div>
+              </Card>
             ))}
           </div>
         </div>
