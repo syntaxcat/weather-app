@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react"
 import {fiveForecastsDaily} from "../../consts"
 import classes from "./WeatherDetails.module.css"
 
-import Box from "@mui/material/Box"
+// import Box from "@mui/material/Box"
 import Card from "@mui/material/Card"
 import CardContent from "@mui/material/CardContent"
 import Typography from "@mui/material/Typography"
@@ -31,7 +31,7 @@ interface CurrentWeatherConditions {
 }
 
 interface WeatherDetailsProps {
-  cityKey: string
+  selectedCityKey: string
   locationName: string
 }
 
@@ -49,7 +49,7 @@ interface dailyForecast {
   }
 }
 
-const apiKey = "y7yuclKZ4EPkwW4fUTKTZiIwwRwBHXkA"
+const apiKey = "uVkGbUg6qcUsTejjcgVlTy0IlIf9KqAL"
 const END_POINT = "http://dataservice.accuweather.com/currentconditions/v1/"
 
 const WeatherDetails = (props: WeatherDetailsProps) => {
@@ -100,6 +100,8 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
     const date = new Date(dateString)
     const options = {weekday: "long"}
     return new Intl.DateTimeFormat("en-US", options).format(date)
+
+    //Check again for type (options)
   }
 
   return (
