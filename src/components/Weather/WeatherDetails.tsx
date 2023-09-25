@@ -46,7 +46,7 @@ interface DailyForecastsResponse {
   DailyForecasts: DailyForecast[]
 }
 
-const apiKey = "phEyJquSGrySGoQbSuNA5yYCgAusbsBa"
+const apiKey = "Ll1YjBGW6mPMfSp7QMFn4iaFAaO3ZajE"
 const END_POINT = "https://dataservice.accuweather.com/currentconditions/v1/"
 
 const END_POINT_5 =
