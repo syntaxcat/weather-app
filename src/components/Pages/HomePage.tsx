@@ -3,7 +3,7 @@ import SearchLocation from "../Locations/SearchLocation"
 import WeatherDetails from "../Weather/WeatherDetails"
 
 const HomePage = () => {
-  // const TelAvivCityKey = "215854" // TEL AVIV - DEFAULT - for bonus
+  const TelAvivCityKey = "215854" // TEL AVIV - DEFAULT - for bonus
   const [locationName, setLocationName] = useState("")
   const [selectedCityKey, setSelectedCityKey] = useState<string | null>(null)
 
@@ -23,6 +23,7 @@ const HomePage = () => {
       />
       {selectedCityKey && (
         <WeatherDetails
+          defaultCityKey={TelAvivCityKey} // Pass default city key
           locationName={locationName}
           selectedCityKey={selectedCityKey}
         />

@@ -39,7 +39,6 @@ interface FavoritesPageProps {
 const FavoritesPage: React.FC<FavoritesPageProps> = ({favoriteLocations}) => {
   return (
     <>
-      <div>Favorite Locations:</div>
       <div className={classes.favoritesContainer}>
         <div className={classes.favoritesArray}>
           {/* </div> */}
