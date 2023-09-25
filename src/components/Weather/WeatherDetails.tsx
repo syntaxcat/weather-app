@@ -47,10 +47,10 @@ interface DailyForecastsResponse {
 }
 
 const apiKey = "phEyJquSGrySGoQbSuNA5yYCgAusbsBa"
-const END_POINT = "http://dataservice.accuweather.com/currentconditions/v1/"
+const END_POINT = "https://dataservice.accuweather.com/currentconditions/v1/"
 
 const END_POINT_5 =
-  "http://dataservice.accuweather.com/forecasts/v1/daily/5day/"
+  "https://dataservice.accuweather.com/forecasts/v1/daily/5day/"
 
 const WeatherDetails = (props: WeatherDetailsProps) => {
   const [currentConditions, setCurrentConditions] =

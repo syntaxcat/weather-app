@@ -3,7 +3,6 @@ import TextField from "@mui/material/TextField"
 import Autocomplete from "@mui/material/Autocomplete"
 import LocationOnIcon from "@mui/icons-material/LocationOn"
 import Grid from "@mui/material/Grid"
-// import {CITIES} from "../../consts"
 import {City} from "../../types"
 import {Box, Typography} from "@mui/material"
 
