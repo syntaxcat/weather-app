@@ -7,12 +7,6 @@ import {CITIES} from "../../consts"
 import {City} from "../../types"
 import {Box, Typography} from "@mui/material"
 
-const defaultCity = {
-  key: "215854",
-  name: "Tel Aviv",
-  country: "Israel"
-}
-
 const apiKey = "eRNLNGG3oeGxTSnzYHanKaG1SVSwOqvU"
 const END_POINT =
   "https://dataservice.accuweather.com/locations/v1/cities/autocomplete"
@@ -22,9 +16,9 @@ interface SearchLocationProps {
 }
 
 const SearchLocation = (props: SearchLocationProps) => {
-  const [value, setValue] = useState<City | null>(defaultCity)
-  const [inputValue, setInputValue] = useState(defaultCity.name)
-  const [options, setOptions] = useState<readonly City[]>([defaultCity])
+  const [value, setValue] = useState<City | null>(null)
+  const [inputValue, setInputValue] = useState(" ")
+  const [options, setOptions] = useState<readonly City[]>([])
 
   const sendRequest = useCallback(function fetchLoctionsHandler(
     userInput: string

@@ -1,6 +1,5 @@
-import React, {useState, useEffect} from "react"
+import {useState, useEffect} from "react"
 import classes from "./WeatherDetails.module.css"
-// import Box from "@mui/material/Box"
 import Card from "@mui/material/Card"
 import CardContent from "@mui/material/CardContent"
 import Typography from "@mui/material/Typography"
@@ -9,15 +8,7 @@ import IconButton from "@mui/material/IconButton"
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder"
 import FavoriteIcon from "@mui/icons-material/Favorite"
 import Stack from "@mui/material/Stack"
-
-// const bull = (
-//   <Box
-//     component="span"
-//     sx={{display: "inline-block", mx: "2px", transform: "scale(0.8)"}}
-//   >
-//     •
-//   </Box>
-// )
+import {City} from "../../types"
 
 interface CurrentWeatherConditions {
   WeatherText: string
@@ -34,7 +25,7 @@ interface CurrentWeatherConditions {
 }
 
 interface WeatherDetailsProps {
-  selectedCityKey: string
+  selectedCity: City
 }
 
 interface DailyForecast {
@@ -75,7 +66,7 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
   useEffect(() => {
     console.log("REMOVE THE RETURN")
     return
-    fetch(`${END_POINT_5}/${props.selectedCityKey}?apikey=${apiKey}`)
+    fetch(`${END_POINT_5}/${props.selectedCity.key}?apikey=${apiKey}`)
       .then((response) => {
         return response.json()
       })
@@ -83,12 +74,12 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
         setDailyForecasts(data.DailyForecasts)
       })
       .catch((error) => console.error("Error fetching daily forecasts:", error))
-  }, [props.selectedCityKey])
+  }, [props.selectedCity.key])
 
   useEffect(() => {
     console.log("REMOVE THE RETURN")
     return
-    fetch(`${END_POINT}/${props.selectedCityKey}?apikey=${apiKey}`)
+    fetch(`${END_POINT}/${props.selectedCity.key}?apikey=${apiKey}`)
       .then((response) => {
         return response.json()
       })
@@ -99,37 +90,43 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
       .catch((error) =>
         console.error("Error fetching weather conditions:", error)
       )
-  }, [props.selectedCityKey])
+  }, [props.selectedCity.key])
 
   const getDayOfWeek = (dateString: string) => {
     const date = new Date(dateString)
-    const options = {weekday: "long"}
+    // typescript - use specific type to match function parameter type
+    const options: {weekday: "long"} = {weekday: "long"}
     return new Intl.DateTimeFormat("en-US", options).format(date)
-    //fix typescript
   }
 
   const favoriteHandler = (event: any) => {
     event.preventDefault()
     console.log(event)
     setFavorite(!favorite)
-    const favorites = JSON.parse(localStorage.getItem("Favorites"))
+    const favoriteFromStorage = localStorage.getItem("Favorites")
+    let favorites: City[]
+    if (favoriteFromStorage === null) {
+      favorites = []
+    } else {
+      favorites = JSON.parse(favoriteFromStorage)
+    }
 
     const isLocationFavorite = favorites.some(
-      (fav) => fav.ID === props.selectedCityKey
+      (favorite) => favorite.key === props.selectedCity.key
     )
     if (isLocationFavorite) {
       // Remove from favorites
       const updatedFavorites = favorites.filter(
-        (fav) => fav.ID !== props.selectedCityKey
+        (favorite) => favorite.key !== props.selectedCity.key
       )
       localStorage.setItem("Favorites", JSON.stringify(updatedFavorites))
     } else {
       // Add to favorites
       const newFavorite = {
-        ID: props.selectedCityKey,
-        name: props.locationName,
+        ID: props.selectedCity.key,
+        name: props.selectedCity.name
         // TODO: should be loaded in favorites page
-        currentWeather: currentConditions.WeatherText
+        // currentWeather: currentConditions.WeatherText
       }
       const updatedFavorites = [newFavorite, ...favorites]
       localStorage.setItem("Favorites", JSON.stringify(updatedFavorites))
