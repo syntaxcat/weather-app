@@ -26,6 +26,7 @@ function App() {
   const [someValue, setSomeValue] = useState(0)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    console.log("HANDLE_CHANGE", event)
     setSomeValue(newValue)
   }
 

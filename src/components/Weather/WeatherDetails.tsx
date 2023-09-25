@@ -56,7 +56,7 @@ interface DailyForecastsResponse {
   DailyForecasts: DailyForecast[]
 }
 
-const apiKey = "EK3eJ4rSQJJEGA17Vx3vbC1PVwGcNpFz"
+const apiKey = "nSXBfUmpi2o2S1AV4lK8xGr1Ec7AzzSb"
 const END_POINT = "http://dataservice.accuweather.com/currentconditions/v1/"
 
 const END_POINT_5 =
@@ -69,7 +69,9 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
   const [dailyForecasts, setDailyForecasts] = useState<DailyForecast[]>([])
 
   const [favorite, setFavorite] = useState(false)
+  //????
   const [isFavorite, setIsFavorite] = useState(false)
+  ////???
 
   useEffect(() => {
     fetch(`${END_POINT_5}/${props.selectedCityKey}?apikey=${apiKey}`)
@@ -109,6 +111,7 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
   }
 
   const favoriteHandler = (event: any) => {
+    event.preventDefault()
     console.log(event)
     setFavorite(!favorite)
     const favorites = JSON.parse(localStorage.getItem("Favorites"))
@@ -116,20 +119,23 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
     const isLocationFavorite = favorites.some(
       (fav) => fav.ID === props.selectedCityKey
     )
-    let updatedFavorites
     if (isLocationFavorite) {
-      updatedFavorites = favorites.filter(
+      // Remove from favorites
+      const updatedFavorites = favorites.filter(
         (fav) => fav.ID !== props.selectedCityKey
       )
+      localStorage.setItem("Favorites", JSON.stringify(updatedFavorites))
     } else {
+      // Add to favorites
       const newFavorite = {
         ID: props.selectedCityKey,
         name: props.locationName,
         currentWeather: currentConditions.WeatherText
       }
-      updatedFavorites = [newFavorite, ...favorites]
+      const updatedFavorites = [newFavorite, ...favorites]
+      localStorage.setItem("Favorites", JSON.stringify(updatedFavorites))
     }
-    localStorage.setItem("Favorites", JSON.stringify(updatedFavorites))
+    setFavorite(!isLocationFavorite) // Toggle favorite state
   }
 
   return (

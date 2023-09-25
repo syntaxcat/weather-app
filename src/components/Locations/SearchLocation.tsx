@@ -12,7 +12,7 @@ interface City {
   country: string
 }
 
-const apiKey = "EK3eJ4rSQJJEGA17Vx3vbC1PVwGcNpFz"
+const apiKey = "nSXBfUmpi2o2S1AV4lK8xGr1Ec7AzzSb"
 const END_POINT =
   "https://dataservice.accuweather.com/locations/v1/cities/autocomplete"
 
