@@ -12,7 +12,13 @@ interface City {
   country: string
 }
 
-const apiKey = "3BCCeJlAfkAeWmk3GT4FiIKb1VMFgFlR"
+const defaultCity = {
+  key: "215854",
+  name: "Tel Aviv",
+  country: "Israel"
+}
+
+const apiKey = "NGr9R9zfGKqH34BGjghe04D0Dt3rCrj4"
 const END_POINT =
   "https://dataservice.accuweather.com/locations/v1/cities/autocomplete"
 
@@ -22,9 +28,9 @@ interface SearchLocationProps {
 }
 
 const SearchLocation = (props: SearchLocationProps) => {
-  const [value, setValue] = useState<City | null>(null)
-  const [inputValue, setInputValue] = useState("")
-  const [options, setOptions] = useState<readonly City[]>([])
+  const [value, setValue] = useState<City | null>(defaultCity)
+  const [inputValue, setInputValue] = useState(defaultCity.name)
+  const [options, setOptions] = useState<readonly City[]>([defaultCity])
 
   //   const getData = () => {
   //     setOptions(
@@ -80,6 +86,7 @@ const SearchLocation = (props: SearchLocationProps) => {
       props.onSelectCityKey(newValue.key)
     }
   }
+
   return (
     <Autocomplete
       id="google-map-demo"
@@ -97,7 +104,6 @@ const SearchLocation = (props: SearchLocationProps) => {
       }}
       onChange={locationChangeHandler}
       onInputChange={(event, newInputValue) => {
-        event.preventDefault()
         setInputValue(newInputValue)
       }}
       renderInput={(params) => (
