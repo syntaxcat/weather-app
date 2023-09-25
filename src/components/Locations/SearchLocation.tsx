@@ -3,36 +3,26 @@ import TextField from "@mui/material/TextField"
 import Autocomplete from "@mui/material/Autocomplete"
 import LocationOnIcon from "@mui/icons-material/LocationOn"
 import Grid from "@mui/material/Grid"
-import {CITIES} from "../../consts"
+// import {CITIES} from "../../consts"
 import {City} from "../../types"
 import {Box, Typography} from "@mui/material"
 
-const apiKey = "eRNLNGG3oeGxTSnzYHanKaG1SVSwOqvU"
+const apiKey = "phEyJquSGrySGoQbSuNA5yYCgAusbsBa"
 const END_POINT =
   "https://dataservice.accuweather.com/locations/v1/cities/autocomplete"
 
 interface SearchLocationProps {
-  onSelectCity: (city: City) => void
+  onSelectCity: (city: City | null) => void
+  selectedCity: City | null
 }
 
 const SearchLocation = (props: SearchLocationProps) => {
-  const [value, setValue] = useState<City | null>(null)
-  const [inputValue, setInputValue] = useState(" ")
-  const [options, setOptions] = useState<readonly City[]>([])
+  const [inputValue, setInputValue] = useState("")
+  const [options, setOptions] = useState<City[]>([])
 
   const sendRequest = useCallback(function fetchLoctionsHandler(
     userInput: string
   ) {
-    setOptions(
-      CITIES.map((city) => {
-        return {
-          key: city.Key,
-          name: city.LocalizedName,
-          country: city.Country.LocalizedName
-        }
-      })
-    )
-    return
     fetch(`${END_POINT}?apikey=${apiKey}&q=${userInput}`)
       .then((response) => {
         return response.json()
@@ -54,10 +44,7 @@ const SearchLocation = (props: SearchLocationProps) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       //   getData()
-      if (inputValue === "") {
-        setOptions(value ? [value] : [])
-        return
-      }
+
       sendRequest(inputValue)
     }, 500)
     return () => {
@@ -66,10 +53,7 @@ const SearchLocation = (props: SearchLocationProps) => {
   }, [inputValue])
 
   const locationChangeHandler = (_event: any, newValue: City | null) => {
-    setValue(newValue)
-    if (newValue) {
-      props.onSelectCity(newValue)
-    }
+    props.onSelectCity(newValue)
   }
 
   return (
@@ -81,7 +65,7 @@ const SearchLocation = (props: SearchLocationProps) => {
       autoComplete
       includeInputInList
       filterSelectedOptions
-      value={value}
+      value={props.selectedCity}
       noOptionsText="No locations"
       isOptionEqualToValue={(option, value) => {
         return option.key === value.key

@@ -1,4 +1,4 @@
-import {React, useState, useMemo, createContext, useContext} from "react"
+import {useState, useMemo, createContext, useContext} from "react"
 import {Routes, Route, Outlet, Link, useLocation} from "react-router-dom"
 import {ThemeProvider, createTheme, useTheme} from "@mui/material/styles"
 import Box from "@mui/material/Box"
@@ -13,11 +13,18 @@ import classes from "./App.module.css"
 import Header from "./components/Layout/Header"
 import HomePage from "./components/Pages/HomePage"
 import FavoritesPage from "./components/Pages/FavoritesPage"
+import {City} from "./types"
 
 const FavoritesPageWrapper = () => {
-  const favoriteLocations = JSON.parse(localStorage.getItem("Favorites"))
+  const favoriteFromStorage = localStorage.getItem("Favorites")
+  let favorites: City[]
+  if (favoriteFromStorage === null) {
+    favorites = []
+  } else {
+    favorites = JSON.parse(favoriteFromStorage)
+  }
 
-  return <FavoritesPage favoriteLocations={favoriteLocations} />
+  return <FavoritesPage favoriteLocations={favorites} />
 }
 
 const ColorModeContext = createContext({toggleColorMode: () => {}})

@@ -12,13 +12,16 @@ const defaultCity = {
 const HomePage = () => {
   const [selectedCity, setSelectedCity] = useState<City | null>(defaultCity)
 
-  const handleSelectedCity = (city: City) => {
+  const handleSelectedCity = (city: City | null) => {
     setSelectedCity(city)
   }
 
   return (
     <>
-      <SearchLocation onSelectCity={handleSelectedCity} />
+      <SearchLocation
+        onSelectCity={handleSelectedCity}
+        selectedCity={selectedCity}
+      />
       {selectedCity && <WeatherDetails selectedCity={selectedCity} />}
     </>
   )

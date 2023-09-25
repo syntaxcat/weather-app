@@ -46,7 +46,7 @@ interface DailyForecastsResponse {
   DailyForecasts: DailyForecast[]
 }
 
-const apiKey = "eRNLNGG3oeGxTSnzYHanKaG1SVSwOqvU"
+const apiKey = "phEyJquSGrySGoQbSuNA5yYCgAusbsBa"
 const END_POINT = "http://dataservice.accuweather.com/currentconditions/v1/"
 
 const END_POINT_5 =
@@ -58,14 +58,28 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
 
   const [dailyForecasts, setDailyForecasts] = useState<DailyForecast[]>([])
 
-  const [favorite, setFavorite] = useState(false)
-
-  // would like to check if foundLocation is already added to favorites > show full heart on details in HomePage
-  // const [isFavorite, setIsFavorite] = useState(false)
+  const [isFavorite, setIsFavorite] = useState(false)
 
   useEffect(() => {
-    console.log("REMOVE THE RETURN")
-    return
+    const favoriteFromStorage = localStorage.getItem("Favorites")
+    let favorites: City[]
+    if (favoriteFromStorage === null) {
+      favorites = []
+    } else {
+      favorites = JSON.parse(favoriteFromStorage)
+    }
+    if (
+      favorites.find((favorite) => {
+        return favorite.key === props.selectedCity.key
+      })
+    ) {
+      setIsFavorite(true)
+    } else {
+      setIsFavorite(false)
+    }
+  }, [props.selectedCity])
+
+  useEffect(() => {
     fetch(`${END_POINT_5}/${props.selectedCity.key}?apikey=${apiKey}`)
       .then((response) => {
         return response.json()
@@ -77,8 +91,6 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
   }, [props.selectedCity.key])
 
   useEffect(() => {
-    console.log("REMOVE THE RETURN")
-    return
     fetch(`${END_POINT}/${props.selectedCity.key}?apikey=${apiKey}`)
       .then((response) => {
         return response.json()
@@ -99,10 +111,8 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
     return new Intl.DateTimeFormat("en-US", options).format(date)
   }
 
-  const favoriteHandler = (event: any) => {
-    event.preventDefault()
-    console.log(event)
-    setFavorite(!favorite)
+  const favoriteHandler = () => {
+    setIsFavorite(!isFavorite)
     const favoriteFromStorage = localStorage.getItem("Favorites")
     let favorites: City[]
     if (favoriteFromStorage === null) {
@@ -115,43 +125,32 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
       (favorite) => favorite.key === props.selectedCity.key
     )
     if (isLocationFavorite) {
-      // Remove from favorites
       const updatedFavorites = favorites.filter(
         (favorite) => favorite.key !== props.selectedCity.key
       )
       localStorage.setItem("Favorites", JSON.stringify(updatedFavorites))
     } else {
-      // Add to favorites
       const newFavorite = {
-        ID: props.selectedCity.key,
-        name: props.selectedCity.name
-        // TODO: should be loaded in favorites page
-        // currentWeather: currentConditions.WeatherText
+        key: props.selectedCity.key,
+        name: props.selectedCity.name,
+        country: props.selectedCity.country
       }
       const updatedFavorites = [newFavorite, ...favorites]
       localStorage.setItem("Favorites", JSON.stringify(updatedFavorites))
     }
-    setFavorite(!isLocationFavorite) // Toggle favorite state
+    setIsFavorite(!isLocationFavorite)
   }
 
   return (
     <>
-      {/* TODO: move inside : <div className={classes.weatherCurrentConditions}></div> */}
-      <Stack direction="row" spacing={1}>
-        <IconButton aria-label="favorite" onClick={favoriteHandler}>
-          {favorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-        </IconButton>
-      </Stack>
       {currentConditions && (
         <div className={classes.weatherCurrentConditions}>
-          {/* <Stack direction="row" spacing={1}>
+          <Stack direction="row" spacing={1}>
             <IconButton aria-label="favorite" onClick={favoriteHandler}>
-              {favorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+              {isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
             </IconButton>
-          </Stack> */}
-
-          {/* <div>Weather details for: {props.locationName} </div> */}
-
+          </Stack>
+          <div>Weather details for: {props.selectedCity.name} </div>
           <div>{currentConditions.WeatherText}</div>
           <div>
             {currentConditions.Temperature.Metric.Value}{" "}
