@@ -1,5 +1,5 @@
 import {React, useState, useMemo, createContext, useContext} from "react"
-import {Routes, Route, Outlet, Link} from "react-router-dom"
+import {Routes, Route, Outlet, Link, useLocation} from "react-router-dom"
 import {ThemeProvider, createTheme, useTheme} from "@mui/material/styles"
 import Box from "@mui/material/Box"
 import IconButton from "@mui/material/IconButton"
@@ -23,15 +23,12 @@ const FavoritesPageWrapper = () => {
 const ColorModeContext = createContext({toggleColorMode: () => {}})
 
 function App() {
-  const [someValue, setSomeValue] = useState(0)
-
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    console.log("HANDLE_CHANGE", event)
-    setSomeValue(newValue)
-  }
-
   const theme = useTheme()
   const colorMode = useContext(ColorModeContext)
+  const location = useLocation()
+
+  const routes = ["/Favorites", "/Home"]
+  const currentTab = routes.find((route) => route === location.pathname)
 
   return (
     <Box
@@ -68,9 +65,14 @@ function App() {
         <div className={classes.navLinks}>
           <Box sx={{width: "100%", marginRight: "1rem"}}>
             <Box sx={{borderBottom: 1, borderColor: "divider"}}>
-              <Tabs value={someValue} onChange={handleChange}>
-                <Tab component={Link} to="/Home" label="Home" />
-                <Tab component={Link} to="/Favorites" label="Favorites" />
+              <Tabs value={currentTab}>
+                <Tab component={Link} value="/Home" to="/Home" label="Home" />
+                <Tab
+                  component={Link}
+                  value="/Favorites"
+                  to="/Favorites"
+                  label="Favorites"
+                />
               </Tabs>
             </Box>
           </Box>

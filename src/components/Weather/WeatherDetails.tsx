@@ -35,7 +35,6 @@ interface CurrentWeatherConditions {
 
 interface WeatherDetailsProps {
   selectedCityKey: string
-  locationName: string
 }
 
 interface DailyForecast {
@@ -56,7 +55,7 @@ interface DailyForecastsResponse {
   DailyForecasts: DailyForecast[]
 }
 
-const apiKey = "NGr9R9zfGKqH34BGjghe04D0Dt3rCrj4"
+const apiKey = "eRNLNGG3oeGxTSnzYHanKaG1SVSwOqvU"
 const END_POINT = "http://dataservice.accuweather.com/currentconditions/v1/"
 
 const END_POINT_5 =
@@ -82,7 +81,7 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
         setDailyForecasts(data.DailyForecasts)
       })
       .catch((error) => console.error("Error fetching daily forecasts:", error))
-  }, [props.selectedCityKey, props.locationName])
+  }, [props.selectedCityKey])
 
   useEffect(() => {
     fetch(`${END_POINT}/${props.selectedCityKey}?apikey=${apiKey}`)
@@ -133,35 +132,29 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
     setFavorite(!isLocationFavorite) // Toggle favorite state
   }
 
-  console.log(currentConditions)
-
   return (
     <>
-      <div className={classes.weatherCurrentConditions}>
-        <Stack direction="row" spacing={1}>
-          <IconButton aria-label="favorite" onClick={favoriteHandler}>
-            {favorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-          </IconButton>
-        </Stack>
-        <>
-          {currentConditions && (
-            <>
-              <div>Weather details for: {props.locationName} </div>
-              <div>Weather Text: {currentConditions.WeatherText}</div>
-              <div>
-                Temperature (Metric):{" "}
-                {currentConditions.Temperature.Metric.Value}{" "}
-                {currentConditions.Temperature.Metric.Unit}
-              </div>
-              <div>
-                Temperature (Imperial):{" "}
+      {currentConditions && (
+        <div className={classes.weatherCurrentConditions}>
+          <Stack direction="row" spacing={1}>
+            <IconButton aria-label="favorite" onClick={favoriteHandler}>
+              {favorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+            </IconButton>
+          </Stack>
+
+          {/* <div>Weather details for: {props.locationName} </div> */}
+
+          <div>{currentConditions.WeatherText}</div>
+          <div>
+            {currentConditions.Temperature.Metric.Value}{" "}
+            {currentConditions.Temperature.Metric.Unit}
+          </div>
+          {/* <div>
                 {currentConditions.Temperature.Imperial.Value}{" "}
                 {currentConditions.Temperature.Imperial.Unit}
-              </div>
-            </>
-          )}
-        </>
-      </div>
+              </div> */}
+        </div>
+      )}
 
       <div className={classes.dailyFiveForecasts}>
         {dailyForecasts.length > 0 ? (
@@ -175,7 +168,7 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
                     color="text.secondary"
                     gutterBottom
                   >
-                    <div>Date: {getDayOfWeek(forecast.Date)}</div>
+                    <div>{getDayOfWeek(forecast.Date)}</div>
                   </Typography>
                   <Typography
                     component="span"
@@ -183,7 +176,6 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
                     color="text.secondary"
                   >
                     <div>
-                      Temperature (Maximum):{" "}
                       {forecast.Temperature.Maximum.Value}{" "}
                       {forecast.Temperature.Maximum.Unit}
                     </div>

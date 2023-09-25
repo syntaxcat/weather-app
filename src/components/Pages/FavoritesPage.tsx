@@ -37,6 +37,8 @@ interface FavoritesPageProps {
 }
 
 const FavoritesPage: React.FC<FavoritesPageProps> = ({favoriteLocations}) => {
+  console.log(favoriteLocations)
+
   return (
     <>
       <div className={classes.favoritesContainer}>
@@ -56,22 +58,14 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({favoriteLocations}) => {
                   <div className={classes.FavoriteLocationCard}>
                     <div>{location.name}</div>
                     <div>{location.Temperature?.Metric?.Value}</div>
-                    {/* <div>
-                    {location.Temperature && location.Temperature.Metric && (
-                      <div>{location.Temperature.Metric.Value}</div>
-                    )}
-                  </div> */}
+                    <div>
+                      {location.Temperature && location.Temperature.Metric && (
+                        <div>{location.Temperature.Metric.Value}</div>
+                      )}
+                    </div>
                     <div>{location.currentWeather}</div>
                   </div>
                 </Typography>
-                {/* <Typography sx={{mb: 1.5}} color="text.secondary">
-                adjective
-              </Typography> */}
-                {/* <Typography variant="body2">
-                well meaning and kindly.
-                <br />
-                {'"a benevolent smile"'}
-              </Typography> */}
               </CardContent>
               {/* <CardActions>
               <Button size="small">Learn More</Button>
@@ -85,20 +79,3 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({favoriteLocations}) => {
 }
 
 export default FavoritesPage
-
-// const updatedFavoritesHandler = (caption, postId) => {
-//   const newFavorites = favorites.map((post) => {
-//     if (post.id === postId) {
-//       return {...post, caption}
-//     } else {
-//       return post
-//     }
-//   })
-//   setPosts(newPosts)
-//   const profiles = JSON.parse(localStorage.getItem("Profiles"))
-//   const profile = profiles.filter(
-//     (profile) => profile.id === foundProfile.id
-//   )[0]
-//   profile.posts = newPosts
-//   localStorage.setItem("Profiles", JSON.stringify(profiles))
-// }

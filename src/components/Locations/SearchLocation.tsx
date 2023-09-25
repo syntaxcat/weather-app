@@ -4,6 +4,7 @@ import Autocomplete from "@mui/material/Autocomplete"
 import LocationOnIcon from "@mui/icons-material/LocationOn"
 import Grid from "@mui/material/Grid"
 import {Key} from "@mui/icons-material"
+import {CITIES} from "../../consts"
 // import Typography from "@mui/material/Typography"
 
 interface City {
@@ -18,12 +19,12 @@ const defaultCity = {
   country: "Israel"
 }
 
-const apiKey = "NGr9R9zfGKqH34BGjghe04D0Dt3rCrj4"
+const apiKey = "eRNLNGG3oeGxTSnzYHanKaG1SVSwOqvU"
 const END_POINT =
   "https://dataservice.accuweather.com/locations/v1/cities/autocomplete"
 
 interface SearchLocationProps {
-  onLocationChange: (locationName: string) => void
+  // onLocationChange: (locationName: string) => void
   onSelectCityKey: (cityKey: string) => void
 }
 
@@ -47,6 +48,16 @@ const SearchLocation = (props: SearchLocationProps) => {
   //Check - fix types
 
   const sendRequest = useCallback(function fetchLoctionsHandler(userInput) {
+    setOptions(
+      CITIES.map((city) => {
+        return {
+          key: city.Key,
+          name: city.LocalizedName,
+          country: city.Country.LocalizedName
+        }
+      })
+    )
+    return
     fetch(`${END_POINT}?apikey=${apiKey}&q=${userInput}`)
       .then((response) => {
         return response.json()
@@ -82,7 +93,7 @@ const SearchLocation = (props: SearchLocationProps) => {
   const locationChangeHandler = (event: any, newValue: City | null) => {
     setValue(newValue)
     if (newValue) {
-      props.onLocationChange(newValue.name)
+      // props.onLocationChange(newValue.name)
       props.onSelectCityKey(newValue.key)
     }
   }
