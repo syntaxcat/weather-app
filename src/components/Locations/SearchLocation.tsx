@@ -5,8 +5,8 @@ import LocationOnIcon from "@mui/icons-material/LocationOn"
 import Grid from "@mui/material/Grid"
 import {City} from "../../types"
 import {Box, Typography} from "@mui/material"
+import {apiKey} from "../../consts"
 
-const apiKey = "wGLKJz3uKaNi7H9VxZwD20UG8kJchLG1"
 const END_POINT =
   "https://dataservice.accuweather.com/locations/v1/cities/autocomplete"
 
@@ -42,8 +42,6 @@ const SearchLocation = (props: SearchLocationProps) => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      //   getData()
-
       sendRequest(inputValue)
     }, 500)
     return () => {

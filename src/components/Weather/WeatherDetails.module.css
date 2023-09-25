@@ -3,6 +3,7 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 1rem;
+  margin-top: 1rem;
 }
 
 .daily {
@@ -15,4 +16,23 @@
   flex-direction: column;
   align-items: center;
   padding: 1rem;
+}
+
+.weatherIconImg {
+  width: 10rem;
+  margin-top: 0.5rem;
+}
+
+.weatherText {
+  display: flex;
+  justify-content: center;
+}
+
+.selectedCityName {
+  font-size: 1.5rem;
+}
+
+.temperature {
+  font-size: 2rem;
+  font-weight: bold;
 }

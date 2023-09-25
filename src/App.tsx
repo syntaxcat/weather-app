@@ -55,20 +55,20 @@ function App() {
     >
       <Header>
         <div className={classes.taskName}>weather task</div>
-        <div className={classes.toggleDarkMode}>
-          <IconButton
-            sx={{ml: 1}}
-            onClick={colorMode.toggleColorMode}
-            color="inherit"
-          >
-            {theme.palette.mode === "dark" ? (
-              <Brightness7Icon />
-            ) : (
-              <Brightness4Icon />
-            )}
-          </IconButton>
-        </div>
         <div className={classes.navLinks}>
+          <div className={classes.toggleDarkMode}>
+            <IconButton
+              sx={{ml: 1}}
+              onClick={colorMode.toggleColorMode}
+              color="inherit"
+            >
+              {theme.palette.mode === "dark" ? (
+                <Brightness7Icon />
+              ) : (
+                <Brightness4Icon />
+              )}
+            </IconButton>
+          </div>
           <Box sx={{width: "100%", marginRight: "1rem"}}>
             <Box sx={{borderBottom: 1, borderColor: "divider"}}>
               <Tabs value={currentTab}>
@@ -90,7 +90,7 @@ function App() {
 }
 
 export default function ToggleColorMode() {
-  const [mode, setMode] = useState<"light" | "dark">("light")
+  const [mode, setMode] = useState<"light" | "dark">("dark")
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {

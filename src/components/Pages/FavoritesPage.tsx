@@ -18,8 +18,8 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({favoriteLocations}) => {
               <CardContent>
                 <Typography variant="h5" component="div">
                   <div className={classes.FavoriteLocationCard}>
-                    <div>{city.name}</div>
-                    <div>{city.country}</div>
+                    <div className={classes.cityName}>{city.name}</div>
+                    <div className={classes.countryName}>{city.country}</div>
                   </div>
                 </Typography>
               </CardContent>

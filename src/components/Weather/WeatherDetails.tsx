@@ -48,7 +48,6 @@ interface DailyForecastsResponse {
   DailyForecasts: DailyForecast[]
 }
 
-// const apiKey = "wGLKJz3uKaNi7H9VxZwD20UG8kJchLG1"
 const END_POINT = "https://dataservice.accuweather.com/currentconditions/v1/"
 
 const END_POINT_5 =
@@ -143,7 +142,7 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
     setIsFavorite(!isLocationFavorite)
   }
 
-  function isNumberSmallerTHan10(num) {
+  function isNumberSmallerTHan10(num: number) {
     if (num < 10) {
       return true
     } else {
@@ -164,25 +163,26 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
               )}
             </IconButton>
           </Stack>
-          <div>Weather details for: {props.selectedCity.name} </div>
+          <div className={classes.selectedCityName}>
+            {props.selectedCity.name}
+          </div>
+          <div className={classes.temperature}>
+            {currentConditions.Temperature.Metric.Value}{" "}
+            {currentConditions.Temperature.Metric.Unit}
+          </div>
           <div>
             <img
+              className={classes.weatherIconImg}
               src={
                 isNumberSmallerTHan10(currentConditions.WeatherIcon)
                   ? `https://developer.accuweather.com/sites/default/files/0${currentConditions.WeatherIcon}-s.png`
                   : `https://developer.accuweather.com/sites/default/files/${currentConditions.WeatherIcon}-s.png`
               }
             />
-            {currentConditions.WeatherText}
+            <div className={classes.weatherText}>
+              {currentConditions.WeatherText}
+            </div>
           </div>
-          <div>
-            {currentConditions.Temperature.Metric.Value}{" "}
-            {currentConditions.Temperature.Metric.Unit}
-          </div>
-          {/* <div>
-                {currentConditions.Temperature.Imperial.Value}{" "}
-                {currentConditions.Temperature.Imperial.Unit}
-              </div> */}
         </div>
       )}
 
