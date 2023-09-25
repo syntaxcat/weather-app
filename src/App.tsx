@@ -56,7 +56,6 @@ function App() {
       <Header>
         <div className={classes.taskName}>weather task</div>
         <div className={classes.toggleDarkMode}>
-          {theme.palette.mode} mode
           <IconButton
             sx={{ml: 1}}
             onClick={colorMode.toggleColorMode}

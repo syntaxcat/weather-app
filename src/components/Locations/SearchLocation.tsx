@@ -6,7 +6,7 @@ import Grid from "@mui/material/Grid"
 import {City} from "../../types"
 import {Box, Typography} from "@mui/material"
 
-const apiKey = "Ll1YjBGW6mPMfSp7QMFn4iaFAaO3ZajE"
+const apiKey = "wGLKJz3uKaNi7H9VxZwD20UG8kJchLG1"
 const END_POINT =
   "https://dataservice.accuweather.com/locations/v1/cities/autocomplete"
 

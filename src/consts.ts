@@ -344,3 +344,5 @@ export const fiveForecastsDaily = {
     }
   ]
 }
+
+export const apiKey = "bSTS80eF8WVutPSvxemtiIkwTnXnygDQ"

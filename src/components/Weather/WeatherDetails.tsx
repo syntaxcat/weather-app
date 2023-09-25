@@ -3,15 +3,17 @@ import classes from "./WeatherDetails.module.css"
 import Card from "@mui/material/Card"
 import CardContent from "@mui/material/CardContent"
 import Typography from "@mui/material/Typography"
-
+import {apiKey} from "../../consts"
 import IconButton from "@mui/material/IconButton"
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder"
 import FavoriteIcon from "@mui/icons-material/Favorite"
 import Stack from "@mui/material/Stack"
 import {City} from "../../types"
+import {pink} from "@mui/material/colors"
 
 interface CurrentWeatherConditions {
   WeatherText: string
+  WeatherIcon: number
   Temperature: {
     Metric: {
       Value: number
@@ -46,7 +48,7 @@ interface DailyForecastsResponse {
   DailyForecasts: DailyForecast[]
 }
 
-const apiKey = "Ll1YjBGW6mPMfSp7QMFn4iaFAaO3ZajE"
+// const apiKey = "wGLKJz3uKaNi7H9VxZwD20UG8kJchLG1"
 const END_POINT = "https://dataservice.accuweather.com/currentconditions/v1/"
 
 const END_POINT_5 =
@@ -141,17 +143,38 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
     setIsFavorite(!isLocationFavorite)
   }
 
+  function isNumberSmallerTHan10(num) {
+    if (num < 10) {
+      return true
+    } else {
+      return null
+    }
+  }
+
   return (
     <>
       {currentConditions && (
         <div className={classes.weatherCurrentConditions}>
           <Stack direction="row" spacing={1}>
             <IconButton aria-label="favorite" onClick={favoriteHandler}>
-              {isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+              {isFavorite ? (
+                <FavoriteIcon sx={{color: pink[500]}} />
+              ) : (
+                <FavoriteBorderIcon sx={{color: pink[500]}} />
+              )}
             </IconButton>
           </Stack>
           <div>Weather details for: {props.selectedCity.name} </div>
-          <div>{currentConditions.WeatherText}</div>
+          <div>
+            <img
+              src={
+                isNumberSmallerTHan10(currentConditions.WeatherIcon)
+                  ? `https://developer.accuweather.com/sites/default/files/0${currentConditions.WeatherIcon}-s.png`
+                  : `https://developer.accuweather.com/sites/default/files/${currentConditions.WeatherIcon}-s.png`
+              }
+            />
+            {currentConditions.WeatherText}
+          </div>
           <div>
             {currentConditions.Temperature.Metric.Value}{" "}
             {currentConditions.Temperature.Metric.Unit}
@@ -166,7 +189,7 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
       <div className={classes.dailyFiveForecasts}>
         {dailyForecasts.length > 0 ? (
           dailyForecasts.map((forecast, index) => (
-            <Card sx={{minWidth: 275}} key={index}>
+            <Card sx={{minWidth: 150}} key={index}>
               <div className={classes.daily}>
                 <CardContent>
                   <Typography
