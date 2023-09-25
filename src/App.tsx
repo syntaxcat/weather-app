@@ -34,7 +34,7 @@ function App() {
   const colorMode = useContext(ColorModeContext)
   const location = useLocation()
 
-  const routes = ["/Favorites", "/Home"]
+  const routes = ["/Favorites", "/"]
   const currentTab = routes.find((route) => route === location.pathname)
 
   return (
@@ -73,7 +73,7 @@ function App() {
           <Box sx={{width: "100%", marginRight: "1rem"}}>
             <Box sx={{borderBottom: 1, borderColor: "divider"}}>
               <Tabs value={currentTab}>
-                <Tab component={Link} value="/Home" to="/Home" label="Home" />
+                <Tab component={Link} value="/" to="/" label="Home" />
                 <Tab
                   component={Link}
                   value="/Favorites"
@@ -116,9 +116,9 @@ export default function ToggleColorMode() {
       <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
           <Routes>
-            <Route path="/" element={<App />}>
-              <Route path="Home" element={<HomePage />} />
-              <Route path="Favorites" element={<FavoritesPageWrapper />} />
+            <Route path="" element={<App />}>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/Favorites" element={<FavoritesPageWrapper />} />
             </Route>
           </Routes>
         </ThemeProvider>
