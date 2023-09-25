@@ -10,6 +10,9 @@ import FavoriteIcon from "@mui/icons-material/Favorite"
 import Stack from "@mui/material/Stack"
 import {City} from "../../types"
 import {pink} from "@mui/material/colors"
+import Snackbar from "@mui/material/Snackbar"
+import SnackbarContent from "@mui/material/SnackbarContent"
+import useMediaQuery from "@mui/material/useMediaQuery"
 
 interface CurrentWeatherConditions {
   WeatherText: string
@@ -61,6 +64,11 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
 
   const [isFavorite, setIsFavorite] = useState(false)
 
+  const [error1, setError1] = useState<string | null>(null) // Added error state
+  const [error2, setError2] = useState<string | null>(null) // Added error state
+
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"))
+
   useEffect(() => {
     const favoriteFromStorage = localStorage.getItem("Favorites")
     let favorites: City[]
@@ -82,27 +90,43 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
 
   useEffect(() => {
     fetch(`${END_POINT_5}/${props.selectedCity.key}?apikey=${apiKey}`)
+      // fetch(
+      //   `${END_POINT_5}/INVALID_ENDPOINT?key=${props.selectedCity.key}?apikey=${apiKey}`
+      // )
       .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok")
+        }
         return response.json()
       })
       .then((data: DailyForecastsResponse) => {
         setDailyForecasts(data.DailyForecasts)
       })
-      .catch((error) => console.error("Error fetching daily forecasts:", error))
+      .catch((error1) => {
+        console.error("Error fetching daily forecasts:", error1)
+        setError1("Error fetching daily forecasts. Please try again.")
+      })
   }, [props.selectedCity.key])
 
   useEffect(() => {
     fetch(`${END_POINT}/${props.selectedCity.key}?apikey=${apiKey}`)
+      // fetch(
+      //   `${END_POINT}/INVALID_ENDPOINT?key=${props.selectedCity.key}?apikey=${apiKey}`
+      // )
       .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok")
+        }
         return response.json()
       })
       .then((data) => {
         const foundWeatherConditions = data[0]
         setCurrentConditions(foundWeatherConditions)
       })
-      .catch((error) =>
-        console.error("Error fetching weather conditions:", error)
-      )
+      .catch((error2) => {
+        console.error("Error fetching weather conditions:", error2)
+        setError2("Error fetching weather conditions. Please try again.")
+      })
   }, [props.selectedCity.key])
 
   const getDayOfWeek = (dateString: string) => {
@@ -218,6 +242,34 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
           <p>Loading daily forecasts...</p>
         )}
       </div>
+
+      <Stack spacing={2} sx={{position: "fixed", bottom: 16, left: 16}}>
+        <Snackbar
+          key="dailyForecastsSnackBar"
+          open={!!error1}
+          autoHideDuration={6000}
+          onClose={() => setError1(null)}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: isMobile ? "left" : "center"
+          }}
+        >
+          <SnackbarContent message={error1} />
+        </Snackbar>
+
+        <Snackbar
+          key="weatherConditionsSnackBar"
+          open={!!error2}
+          autoHideDuration={6000}
+          onClose={() => setError2(null)}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: isMobile ? "left" : "center"
+          }}
+        >
+          <SnackbarContent message={error2} />
+        </Snackbar>
+      </Stack>
     </>
   )
 }

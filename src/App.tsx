@@ -14,6 +14,7 @@ import Header from "./components/Layout/Header"
 import HomePage from "./components/Pages/HomePage"
 import FavoritesPage from "./components/Pages/FavoritesPage"
 import {City} from "./types"
+import {Snackbar, SnackbarContent} from "@mui/material"
 
 const FavoritesPageWrapper = () => {
   const favoriteFromStorage = localStorage.getItem("Favorites")
@@ -33,6 +34,8 @@ function App() {
   const theme = useTheme()
   const colorMode = useContext(ColorModeContext)
   const location = useLocation()
+
+  const [errorMessage, setErrorMessage] = useState<string | null>(null) // Added error state
 
   const routes = ["/Favorites", "/"]
   const currentTab = routes.find((route) => route === location.pathname)
@@ -85,6 +88,14 @@ function App() {
         </div>
       </Header>
       <Outlet />
+
+      <Snackbar
+        open={!!errorMessage} // Open the Snackbar if errorMessage is not null
+        autoHideDuration={6000}
+        onClose={() => setErrorMessage(null)} // Close Snackbar on close
+      >
+        <SnackbarContent message={errorMessage} />
+      </Snackbar>
     </Box>
   )
 }
