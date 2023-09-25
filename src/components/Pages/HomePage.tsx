@@ -1,21 +1,20 @@
 import {useState} from "react"
 import SearchLocation from "../Locations/SearchLocation"
 import WeatherDetails from "../Weather/WeatherDetails"
+import {City} from "../../types"
 
 const HomePage = () => {
   const TelAvivCityKey = "215854" // TEL AVIV - DEFAULT - for bonus
-  const [selectedCityKey, setSelectedCityKey] = useState<string | null>(
-    TelAvivCityKey
-  )
+  const [selectedCity, setSelectedCity] = useState<City | null>(TelAvivCityKey)
 
-  const handleSelectedCityKey = (cityKey: string) => {
-    setSelectedCityKey(cityKey)
+  const handleSelectedCity = (city: City) => {
+    setSelectedCity(city)
   }
 
   return (
     <>
-      <SearchLocation onSelectCityKey={handleSelectedCityKey} />
-      {selectedCityKey && <WeatherDetails selectedCityKey={selectedCityKey} />}
+      <SearchLocation onSelectCity={handleSelectedCity} />
+      {selectedCity && <WeatherDetails selectedCity={selectedCity} />}
     </>
   )
 }

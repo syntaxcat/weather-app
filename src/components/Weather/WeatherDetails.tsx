@@ -73,6 +73,8 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
   // const [isFavorite, setIsFavorite] = useState(false)
 
   useEffect(() => {
+    console.log("REMOVE THE RETURN")
+    return
     fetch(`${END_POINT_5}/${props.selectedCityKey}?apikey=${apiKey}`)
       .then((response) => {
         return response.json()
@@ -84,6 +86,8 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
   }, [props.selectedCityKey])
 
   useEffect(() => {
+    console.log("REMOVE THE RETURN")
+    return
     fetch(`${END_POINT}/${props.selectedCityKey}?apikey=${apiKey}`)
       .then((response) => {
         return response.json()
@@ -124,6 +128,7 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
       const newFavorite = {
         ID: props.selectedCityKey,
         name: props.locationName,
+        // TODO: should be loaded in favorites page
         currentWeather: currentConditions.WeatherText
       }
       const updatedFavorites = [newFavorite, ...favorites]
@@ -134,13 +139,19 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
 
   return (
     <>
+      {/* TODO: move inside : <div className={classes.weatherCurrentConditions}></div> */}
+      <Stack direction="row" spacing={1}>
+        <IconButton aria-label="favorite" onClick={favoriteHandler}>
+          {favorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+        </IconButton>
+      </Stack>
       {currentConditions && (
         <div className={classes.weatherCurrentConditions}>
-          <Stack direction="row" spacing={1}>
+          {/* <Stack direction="row" spacing={1}>
             <IconButton aria-label="favorite" onClick={favoriteHandler}>
               {favorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
             </IconButton>
-          </Stack>
+          </Stack> */}
 
           {/* <div>Weather details for: {props.locationName} </div> */}
 
