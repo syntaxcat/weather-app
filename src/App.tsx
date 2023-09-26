@@ -90,9 +90,9 @@ function App() {
       <Outlet />
 
       <Snackbar
-        open={!!errorMessage} // Open the Snackbar if errorMessage is not null
+        open={!!errorMessage}
         autoHideDuration={6000}
-        onClose={() => setErrorMessage(null)} // Close Snackbar on close
+        onClose={() => setErrorMessage(null)}
       >
         <SnackbarContent message={errorMessage} />
       </Snackbar>

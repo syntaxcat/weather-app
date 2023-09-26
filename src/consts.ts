@@ -345,4 +345,4 @@ export const fiveForecastsDaily = {
   ]
 }
 
-export const apiKey = "gPX1NWggInloNLz46WzMAQoHLC9ewDAG"
+export const apiKey = "cExfMTlaOUydGLEzGk13zdwQ68GjI56A"
