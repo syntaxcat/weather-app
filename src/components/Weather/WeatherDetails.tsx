@@ -64,10 +64,14 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
 
   const [isFavorite, setIsFavorite] = useState(false)
 
-  const [error1, setError1] = useState<string | null>(null) // Added error state
-  const [error2, setError2] = useState<string | null>(null) // Added error state
+  const [error1, setError1] = useState<string | null>(null)
+  const [error2, setError2] = useState<string | null>(null)
 
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"))
+
+  const convertFahrenheitToCelsius = (fahrenheit: number) => {
+    return ((fahrenheit - 32) * 5) / 9
+  }
 
   useEffect(() => {
     const favoriteFromStorage = localStorage.getItem("Favorites")
@@ -178,7 +182,7 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
     <>
       {currentConditions && (
         <div className={classes.weatherCurrentConditions}>
-          <Stack direction="row" spacing={1}>
+          <Stack direction="row" spacing={2}>
             <IconButton aria-label="favorite" onClick={favoriteHandler}>
               {isFavorite ? (
                 <FavoriteIcon sx={{color: pink[500]}} />
@@ -191,8 +195,10 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
             {props.selectedCity.name}
           </div>
           <div className={classes.temperature}>
-            {currentConditions.Temperature.Metric.Value}{" "}
-            {currentConditions.Temperature.Metric.Unit}
+            {convertFahrenheitToCelsius(
+              currentConditions.Temperature.Imperial.Value
+            ).toFixed(1)}
+            °C
           </div>
           <div>
             <img
@@ -230,8 +236,12 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
                     color="text.secondary"
                   >
                     <div>
-                      {forecast.Temperature.Maximum.Value}{" "}
-                      {forecast.Temperature.Maximum.Unit}
+                      {Math.round(
+                        convertFahrenheitToCelsius(
+                          forecast.Temperature.Maximum.Value
+                        )
+                      )}
+                      °C
                     </div>
                   </Typography>
                 </CardContent>
