@@ -46,14 +46,11 @@ function App() {
         display: "flex",
         flexDirection: "column",
         width: "100%",
-        minHeight: "100vh",
         boxSizing: "border-box",
-        alignItems: "center",
-        justifyContent: "center",
+        height: "100%",
         bgcolor: "background.default",
         color: "text.primary",
-        borderRadius: 1,
-        p: 3
+        overflowY: "scroll"
       }}
     >
       <Header>
@@ -87,7 +84,16 @@ function App() {
           </Box>
         </div>
       </Header>
-      <Outlet />
+      <Box
+        sx={{
+          p: 3,
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "column"
+        }}
+      >
+        <Outlet />
+      </Box>
 
       <Snackbar
         open={!!errorMessage}

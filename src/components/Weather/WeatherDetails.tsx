@@ -13,6 +13,7 @@ import {pink} from "@mui/material/colors"
 import Snackbar from "@mui/material/Snackbar"
 import SnackbarContent from "@mui/material/SnackbarContent"
 import useMediaQuery from "@mui/material/useMediaQuery"
+import {Theme} from "@mui/material"
 
 interface CurrentWeatherConditions {
   WeatherText: string
@@ -67,7 +68,7 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
   const [error1, setError1] = useState<string | null>(null)
   const [error2, setError2] = useState<string | null>(null)
 
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"))
+  const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"))
 
   const convertFahrenheitToCelsius = (fahrenheit: number) => {
     return ((fahrenheit - 32) * 5) / 9

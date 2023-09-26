@@ -4,7 +4,7 @@ import Autocomplete from "@mui/material/Autocomplete"
 import LocationOnIcon from "@mui/icons-material/LocationOn"
 import Grid from "@mui/material/Grid"
 import {City} from "../../types"
-import {Box, Snackbar, SnackbarContent, Typography} from "@mui/material"
+import {Box, Snackbar, SnackbarContent, Theme, Typography} from "@mui/material"
 import {apiKey} from "../../consts"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
@@ -24,7 +24,7 @@ const SearchLocation = (props: SearchLocationProps) => {
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"))
+  const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"))
 
   const sendRequest = useCallback(function fetchLoctionsHandler(
     userInput: string
