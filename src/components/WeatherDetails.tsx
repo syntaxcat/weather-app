@@ -13,6 +13,7 @@ import {pink} from "@mui/material/colors"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import {Theme} from "@mui/material"
 import {useSnackbar} from "notistack"
+import {convertFahrenheitToCelsius} from "../utils"
 
 interface CurrentWeatherConditions {
   WeatherText: string
@@ -67,10 +68,6 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
   // const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"))
 
   const {enqueueSnackbar} = useSnackbar()
-
-  const convertFahrenheitToCelsius = (fahrenheit: number) => {
-    return ((fahrenheit - 32) * 5) / 9
-  }
 
   useEffect(() => {
     const favoriteFromStorage = localStorage.getItem("Favorites")
