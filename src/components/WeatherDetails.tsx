@@ -164,14 +164,6 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
     setIsFavorite(!isLocationFavorite)
   }
 
-  function isNumberSmallerTHan10(num: number) {
-    if (num < 10) {
-      return true
-    } else {
-      return null
-    }
-  }
-
   return (
     <>
       {currentConditions && (
@@ -198,7 +190,7 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
             <img
               className={classes.weatherIconImg}
               src={
-                isNumberSmallerTHan10(currentConditions.WeatherIcon)
+                currentConditions.WeatherIcon < 10
                   ? `https://developer.accuweather.com/sites/default/files/0${currentConditions.WeatherIcon}-s.png`
                   : `https://developer.accuweather.com/sites/default/files/${currentConditions.WeatherIcon}-s.png`
               }
