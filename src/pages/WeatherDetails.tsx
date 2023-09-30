@@ -1,7 +1,8 @@
 import {useState} from "react"
 import SearchLocation from "../components/SearchLocation"
-import WeatherDetails from "../components/WeatherDetails"
 import {City} from "../types"
+import WeatherConditions from "../components/WeatherConditions"
+import DailyForecast from "../components/DailyForecasts"
 
 const defaultCity = {
   key: "215854",
@@ -22,7 +23,12 @@ const HomePage = () => {
         onSelectCity={handleSelectedCity}
         selectedCity={selectedCity}
       />
-      {selectedCity && <WeatherDetails selectedCity={selectedCity} />}
+      {selectedCity && (
+        <>
+          <WeatherConditions city={selectedCity} />
+          <DailyForecast city={selectedCity} />
+        </>
+      )}
     </>
   )
 }

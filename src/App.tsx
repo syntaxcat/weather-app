@@ -10,7 +10,7 @@ import Tabs from "@mui/material/Tabs"
 import Tab from "@mui/material/Tab"
 
 import classes from "./App.module.css"
-import HomePage from "./pages/HomePage"
+import HomePage from "./pages/WeatherDetails"
 import FavoritesPage from "./pages/FavoritesPage"
 import {City} from "./types"
 import {Snackbar, SnackbarContent} from "@mui/material"
