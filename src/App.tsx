@@ -10,7 +10,6 @@ import Tabs from "@mui/material/Tabs"
 import Tab from "@mui/material/Tab"
 
 import classes from "./App.module.css"
-import Header from "./components/Header"
 import HomePage from "./pages/HomePage"
 import FavoritesPage from "./pages/FavoritesPage"
 import {City} from "./types"
@@ -53,37 +52,40 @@ function App() {
         overflowY: "scroll"
       }}
     >
-      <Header>
-        <div className={classes.taskName}>weather task</div>
-        <div className={classes.navLinks}>
-          <div className={classes.toggleDarkMode}>
-            <IconButton
-              sx={{ml: 1}}
-              onClick={colorMode.toggleColorMode}
-              color="inherit"
-            >
-              {theme.palette.mode === "dark" ? (
-                <Brightness7Icon />
-              ) : (
-                <Brightness4Icon />
-              )}
-            </IconButton>
-          </div>
-          <Box sx={{width: "100%", marginRight: "1rem"}}>
-            <Box sx={{borderBottom: 1, borderColor: "divider"}}>
-              <Tabs value={currentTab}>
-                <Tab component={Link} value="/" to="/" label="Home" />
-                <Tab
-                  component={Link}
-                  value="/Favorites"
-                  to="/Favorites"
-                  label="Favorites"
-                />
-              </Tabs>
+      <header>
+        <nav className={classes.headerNav}>
+          <div className={classes.taskName}>weather task</div>
+          <div className={classes.navLinks}>
+            <div className={classes.toggleDarkMode}>
+              <IconButton
+                sx={{ml: 1}}
+                onClick={colorMode.toggleColorMode}
+                color="inherit"
+              >
+                {theme.palette.mode === "dark" ? (
+                  <Brightness7Icon />
+                ) : (
+                  <Brightness4Icon />
+                )}
+              </IconButton>
+            </div>
+            <Box sx={{width: "100%", marginRight: "1rem"}}>
+              <Box sx={{borderBottom: 1, borderColor: "divider"}}>
+                <Tabs value={currentTab}>
+                  <Tab component={Link} value="/" to="/" label="Home" />
+                  <Tab
+                    component={Link}
+                    value="/Favorites"
+                    to="/Favorites"
+                    label="Favorites"
+                  />
+                </Tabs>
+              </Box>
             </Box>
-          </Box>
-        </div>
-      </Header>
+          </div>
+        </nav>
+      </header>
+
       <Box
         sx={{
           p: 3,
