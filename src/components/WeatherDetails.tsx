@@ -10,10 +10,9 @@ import FavoriteIcon from "@mui/icons-material/Favorite"
 import Stack from "@mui/material/Stack"
 import {City} from "../types"
 import {pink} from "@mui/material/colors"
-import Snackbar from "@mui/material/Snackbar"
-import SnackbarContent from "@mui/material/SnackbarContent"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import {Theme} from "@mui/material"
+import {useSnackbar} from "notistack"
 
 interface CurrentWeatherConditions {
   WeatherText: string
@@ -65,10 +64,9 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
 
   const [isFavorite, setIsFavorite] = useState(false)
 
-  const [error1, setError1] = useState<string | null>(null)
-  const [error2, setError2] = useState<string | null>(null)
+  // const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"))
 
-  const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"))
+  const {enqueueSnackbar} = useSnackbar()
 
   const convertFahrenheitToCelsius = (fahrenheit: number) => {
     return ((fahrenheit - 32) * 5) / 9
@@ -107,9 +105,10 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
       .then((data: DailyForecastsResponse) => {
         setDailyForecasts(data.DailyForecasts)
       })
-      .catch((error1) => {
-        console.error("Error fetching daily forecasts:", error1)
-        setError1("Error fetching daily forecasts. Please try again.")
+      .catch(() => {
+        enqueueSnackbar("Error fetching daily forecasts. Please try again.", {
+          variant: "error"
+        })
       })
   }, [props.selectedCity.key])
 
@@ -128,15 +127,18 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
         const foundWeatherConditions = data[0]
         setCurrentConditions(foundWeatherConditions)
       })
-      .catch((error2) => {
-        console.error("Error fetching weather conditions:", error2)
-        setError2("Error fetching weather conditions. Please try again.")
+      .catch(() => {
+        enqueueSnackbar(
+          "Error fetching weather conditions. Please try again.",
+          {
+            variant: "error"
+          }
+        )
       })
   }, [props.selectedCity.key])
 
   const getDayOfWeek = (dateString: string) => {
     const date = new Date(dateString)
-    // typescript - use specific type to match function parameter type
     const options: {weekday: "long"} = {weekday: "long"}
     return new Intl.DateTimeFormat("en-US", options).format(date)
   }
@@ -253,34 +255,6 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
           <p>Loading daily forecasts...</p>
         )}
       </div>
-
-      <Stack spacing={2} sx={{position: "fixed", bottom: 16, left: 16}}>
-        <Snackbar
-          key="dailyForecastsSnackBar"
-          open={!!error1}
-          autoHideDuration={6000}
-          onClose={() => setError1(null)}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: isMobile ? "left" : "center"
-          }}
-        >
-          <SnackbarContent message={error1} />
-        </Snackbar>
-
-        <Snackbar
-          key="weatherConditionsSnackBar"
-          open={!!error2}
-          autoHideDuration={6000}
-          onClose={() => setError2(null)}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: isMobile ? "left" : "center"
-          }}
-        >
-          <SnackbarContent message={error2} />
-        </Snackbar>
-      </Stack>
     </>
   )
 }

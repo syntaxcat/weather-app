@@ -4,9 +4,11 @@ import Autocomplete from "@mui/material/Autocomplete"
 import LocationOnIcon from "@mui/icons-material/LocationOn"
 import Grid from "@mui/material/Grid"
 import {City} from "../types"
-import {Box, Snackbar, SnackbarContent, Theme, Typography} from "@mui/material"
+import {Box, Theme, Typography} from "@mui/material"
 import {apiKey} from "../consts"
 import useMediaQuery from "@mui/material/useMediaQuery"
+
+import {useSnackbar} from "notistack"
 
 import Stack from "@mui/material/Stack"
 
@@ -22,9 +24,9 @@ const SearchLocation = (props: SearchLocationProps) => {
   const [inputValue, setInputValue] = useState("")
   const [options, setOptions] = useState<City[]>([])
 
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  // const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"))
 
-  const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"))
+  const {enqueueSnackbar} = useSnackbar()
 
   const sendRequest = useCallback(function fetchLoctionsHandler(
     userInput: string
@@ -46,11 +48,11 @@ const SearchLocation = (props: SearchLocationProps) => {
           }
         })
         setOptions(foundLocations)
-        setErrorMessage(null)
       })
-      .catch((error) => {
-        console.error("Error fetching locations:", error)
-        setErrorMessage("Error fetching locations. Please try again.")
+      .catch(() => {
+        enqueueSnackbar("Error fetching locations. Please try again.", {
+          variant: "error"
+        })
       })
   },
   [])
@@ -113,21 +115,6 @@ const SearchLocation = (props: SearchLocationProps) => {
           )
         }}
       />
-
-      <Stack spacing={0} sx={{position: "fixed", bottom: 16, left: 16}}>
-        <Snackbar
-          key="searchLocationSnackbar"
-          open={!!errorMessage}
-          autoHideDuration={6000}
-          onClose={() => setErrorMessage(null)}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: isMobile ? "left" : "center"
-          }}
-        >
-          <SnackbarContent message={errorMessage} />
-        </Snackbar>
-      </Stack>
     </div>
   )
 }
