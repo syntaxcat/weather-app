@@ -32,7 +32,6 @@ const SearchLocation = (props: SearchLocationProps) => {
     userInput: string
   ) {
     fetch(`${END_POINT}?apikey=${apiKey}&q=${userInput}`)
-      // fetch(`${END_POINT}_INVALID_URL?apikey=${apiKey}&q=${userInput}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok")

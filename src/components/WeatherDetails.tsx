@@ -93,9 +93,6 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
 
   useEffect(() => {
     fetch(`${END_POINT_5}/${props.selectedCity.key}?apikey=${apiKey}`)
-      // fetch(
-      //   `${END_POINT_5}/INVALID_ENDPOINT?key=${props.selectedCity.key}?apikey=${apiKey}`
-      // )
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok")
@@ -114,9 +111,6 @@ const WeatherDetails = (props: WeatherDetailsProps) => {
 
   useEffect(() => {
     fetch(`${END_POINT}/${props.selectedCity.key}?apikey=${apiKey}`)
-      // fetch(
-      //   `${END_POINT}/INVALID_ENDPOINT?key=${props.selectedCity.key}?apikey=${apiKey}`
-      // )
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok")
