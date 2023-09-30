@@ -3,8 +3,8 @@ import classes from "./FavoritesPage.module.css"
 import Card from "@mui/material/Card"
 import CardContent from "@mui/material/CardContent"
 import Typography from "@mui/material/Typography"
-import {City} from "../../types"
-import {apiKey} from "../../consts"
+import {City} from "../types"
+import {apiKey} from "../consts"
 
 interface FavoritesPageProps {
   favoriteLocations: City[]

@@ -1,7 +1,7 @@
 import {useState} from "react"
-import SearchLocation from "../Locations/SearchLocation"
-import WeatherDetails from "../Weather/WeatherDetails"
-import {City} from "../../types"
+import SearchLocation from "../components/SearchLocation"
+import WeatherDetails from "../components/WeatherDetails"
+import {City} from "../types"
 
 const defaultCity = {
   key: "215854",
