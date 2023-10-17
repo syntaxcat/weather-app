@@ -4,13 +4,10 @@ import Autocomplete from "@mui/material/Autocomplete"
 import LocationOnIcon from "@mui/icons-material/LocationOn"
 import Grid from "@mui/material/Grid"
 import {City} from "../types"
-import {Box, Theme, Typography} from "@mui/material"
+import {Box, Typography} from "@mui/material"
 import {apiKey} from "../consts"
-import useMediaQuery from "@mui/material/useMediaQuery"
 
 import {useSnackbar} from "notistack"
-
-import Stack from "@mui/material/Stack"
 
 const END_POINT =
   "https://dataservice.accuweather.com/locations/v1/cities/autocomplete"
