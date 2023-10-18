@@ -69,6 +69,7 @@ function App() {
                 )}
               </IconButton>
             </div>
+
             <Box sx={{width: "100%", marginRight: "1rem"}}>
               <Box sx={{borderBottom: 1, borderColor: "divider"}}>
                 <Tabs value={currentTab}>
