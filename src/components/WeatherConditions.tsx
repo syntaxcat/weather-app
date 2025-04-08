@@ -1,15 +1,15 @@
-import {useState, useEffect} from "react"
-import {apiKey} from "../consts"
-import {useSnackbar} from "notistack"
-import {convertFahrenheitToCelsius} from "../utils"
+import { useState, useEffect } from "react"
+import { apiKey } from "../consts"
+import { useSnackbar } from "notistack"
+import { convertFahrenheitToCelsius } from "../utils"
 import classes from "../components/WeatherConditions.module.css"
-import {pink} from "@mui/material/colors"
+import { pink } from "@mui/material/colors"
 import IconButton from "@mui/material/IconButton"
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder"
 import FavoriteIcon from "@mui/icons-material/Favorite"
 import Stack from "@mui/material/Stack"
 
-import {City} from "../types"
+import { City } from "../types"
 
 interface CurrentWeatherConditions {
   WeatherText: string
@@ -38,35 +38,38 @@ const WeatherConditions = (props: WeatherConditionsProps) => {
 
   const [isFavorite, setIsFavorite] = useState(false)
 
-  const {enqueueSnackbar} = useSnackbar()
+  const { enqueueSnackbar } = useSnackbar()
 
   const favoriteHandler = () => {
-    setIsFavorite(!isFavorite)
     const favoriteFromStorage = localStorage.getItem("Favorites")
-    let favorites: City[]
-    if (favoriteFromStorage === null) {
-      favorites = []
-    } else {
-      favorites = JSON.parse(favoriteFromStorage)
-    }
+    let favorites: City[] = favoriteFromStorage ? JSON.parse(favoriteFromStorage) : []
 
     const isLocationFavorite = favorites.some(
       (favorite) => favorite.key === props.city.key
     )
+
+    let updatedFavorites: City[]
+
     if (isLocationFavorite) {
-      const updatedFavorites = favorites.filter(
+      updatedFavorites = favorites.filter(
         (favorite) => favorite.key !== props.city.key
       )
-      localStorage.setItem("Favorites", JSON.stringify(updatedFavorites))
+      enqueueSnackbar("Removed from favorites", {
+        variant: "info"
+      })
     } else {
       const newFavorite = {
         key: props.city.key,
         name: props.city.name,
         country: props.city.country
       }
-      const updatedFavorites = [newFavorite, ...favorites]
-      localStorage.setItem("Favorites", JSON.stringify(updatedFavorites))
+      updatedFavorites = [newFavorite, ...favorites]
+      enqueueSnackbar("Added to favorites", {
+        variant: "success"
+      })
     }
+
+    localStorage.setItem("Favorites", JSON.stringify(updatedFavorites))
     setIsFavorite(!isLocationFavorite)
   }
 
@@ -118,9 +121,9 @@ const WeatherConditions = (props: WeatherConditionsProps) => {
           <Stack direction="row" spacing={2}>
             <IconButton aria-label="favorite" onClick={favoriteHandler}>
               {isFavorite ? (
-                <FavoriteIcon sx={{color: pink[500]}} />
+                <FavoriteIcon sx={{ color: pink[500] }} />
               ) : (
-                <FavoriteBorderIcon sx={{color: pink[500]}} />
+                <FavoriteBorderIcon sx={{ color: pink[500] }} />
               )}
             </IconButton>
           </Stack>

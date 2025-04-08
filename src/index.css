@@ -27,7 +27,6 @@ a:hover {
 
 body {
   margin: 0;
-  /* place-items: center; */
   min-width: 320px;
 }
 
@@ -35,7 +34,21 @@ html,
 body,
 #root {
   height: 100%;
+  width: 100%;
+  overflow-x: hidden;
 }
+
+/* html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+} */
 
 h1 {
   font-size: 3.2em;
@@ -59,6 +72,13 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+.my-snackbar {
+  max-width: 300px !important;
+  width: 100%;
+  box-sizing: border-box;
+  word-break: break-word;
 }
 
 @media (prefers-color-scheme: light) {

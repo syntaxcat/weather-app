@@ -1,6 +1,6 @@
-import {useState, useMemo, createContext, useContext} from "react"
-import {Routes, Route, Outlet, Link, useLocation} from "react-router-dom"
-import {ThemeProvider, createTheme, useTheme} from "@mui/material/styles"
+import { useState, useMemo, createContext, useContext } from "react"
+import { Routes, Route, Outlet, Link, useLocation } from "react-router-dom"
+import { ThemeProvider, createTheme, useTheme } from "@mui/material/styles"
 import Box from "@mui/material/Box"
 import IconButton from "@mui/material/IconButton"
 import Brightness4Icon from "@mui/icons-material/Brightness4"
@@ -12,8 +12,8 @@ import Tab from "@mui/material/Tab"
 import classes from "./App.module.css"
 import HomePage from "./pages/WeatherDetails"
 import FavoritesPage from "./pages/FavoritesPage"
-import {City} from "./types"
-import {Snackbar, SnackbarContent} from "@mui/material"
+import { City } from "./types"
+import { Snackbar, SnackbarContent } from "@mui/material"
 
 const FavoritesPageWrapper = () => {
   const favoriteFromStorage = localStorage.getItem("Favorites")
@@ -23,11 +23,13 @@ const FavoritesPageWrapper = () => {
   } else {
     favorites = JSON.parse(favoriteFromStorage)
   }
+  console.log("✅ FavoritesPageWrapper rendered with:", favorites)
+
 
   return <FavoritesPage favoriteLocations={favorites} />
 }
 
-const ColorModeContext = createContext({toggleColorMode: () => {}})
+const ColorModeContext = createContext({ toggleColorMode: () => { } })
 
 function App() {
   const theme = useTheme()
@@ -41,16 +43,17 @@ function App() {
 
   return (
     <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        width: "100%",
-        boxSizing: "border-box",
-        height: "100%",
-        bgcolor: "background.default",
-        color: "text.primary",
-        overflowY: "scroll"
-      }}
+    sx={{
+      display: "flex",
+      flexDirection: "column",
+      width: "100%",
+      maxWidth: "100vw",        // ✅ prevent overflow
+      overflowX: "hidden",       // ✅ hide extra scroll
+      boxSizing: "border-box",
+      height: "100%",
+      bgcolor: "background.default",
+      color: "text.primary"
+    }}
     >
       <header>
         <nav className={classes.headerNav}>
@@ -58,7 +61,7 @@ function App() {
           <div className={classes.navLinks}>
             <div className={classes.toggleDarkMode}>
               <IconButton
-                sx={{ml: 1}}
+                sx={{ ml: 1 }}
                 onClick={colorMode.toggleColorMode}
                 color="inherit"
               >
@@ -70,8 +73,8 @@ function App() {
               </IconButton>
             </div>
 
-            <Box sx={{width: "100%", marginRight: "1rem"}}>
-              <Box sx={{borderBottom: 1, borderColor: "divider"}}>
+            <Box sx={{ width: "100%", marginRight: "1rem" }}>
+              <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                 <Tabs value={currentTab}>
                   <Tab component={Link} value="/" to="/" label="Home" />
                   <Tab
@@ -131,17 +134,15 @@ export default function ToggleColorMode() {
   )
 
   return (
-    <>
-      <ColorModeContext.Provider value={colorMode}>
-        <ThemeProvider theme={theme}>
-          <Routes>
-            <Route path="" element={<App />}>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/Favorites" element={<FavoritesPageWrapper />} />
-            </Route>
-          </Routes>
-        </ThemeProvider>
-      </ColorModeContext.Provider>
-    </>
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <Routes>
+          <Route path="/" element={<App />}>
+            <Route index element={<HomePage />} />
+            <Route path="Favorites" element={<FavoritesPageWrapper />} />
+          </Route>
+        </Routes>
+      </ThemeProvider>
+    </ColorModeContext.Provider>
   )
 }
