@@ -2,17 +2,18 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 0.75rem;
+  text-align: center;
 }
 
 
 .favoritesContainer {
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 200px;
   width: 100%;
-  padding: 1rem;
   box-sizing: border-box;
 }
 
@@ -31,16 +32,18 @@
 }
 
 .cityName {
-  font-size: 2rem;
+  font-size: 1.4rem;
+  font-weight: 600;
 }
 
 .countryName {
-  font-size: 1.5rem;
-  font-weight: 400;
+  font-size: 1rem;
+  color: #888;
 }
 
 .favoriteCurrentTemperature {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
+  font-weight: 500;
 }
 
 .loading {
@@ -54,4 +57,19 @@
   color: gray;
   font-size: 1rem;
   margin-top: 2rem;
+}
+
+.cityHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.noData {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #999;
+  margin-top: 2rem;
+  line-height: 1.6;
 }

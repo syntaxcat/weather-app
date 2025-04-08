@@ -5,6 +5,11 @@ import CardContent from "@mui/material/CardContent"
 import Typography from "@mui/material/Typography"
 import { City } from "../types"
 import { apiKey } from "../consts"
+import { pink } from "@mui/material/colors"
+
+import IconButton from "@mui/material/IconButton"
+import FavoriteIcon from "@mui/icons-material/Favorite"
+import { useSnackbar } from "notistack"
 
 interface FavoritesPageProps {
   favoriteLocations: City[]
@@ -14,9 +19,34 @@ const END_POINT = "https://dataservice.accuweather.com/currentconditions/v1/"
 
 const FavoritesPage: React.FC<FavoritesPageProps> = ({ favoriteLocations }) => {
 
-  console.log("📦 FavoritesPage mounted");
   const [weatherData, setWeatherData] = useState<any[]>([])
+  const { enqueueSnackbar } = useSnackbar()
+
+  console.log("📦 FavoritesPage mounted");
   const [loading, setLoading] = useState(true)
+
+  const removeFromFavorites = (cityKey: string) => {
+    const stored = localStorage.getItem("Favorites")
+    const favorites = stored ? JSON.parse(stored) : []
+
+    const updated = favorites.filter((city: City) => city.key !== cityKey)
+    localStorage.setItem("Favorites", JSON.stringify(updated))
+
+    const newWeatherData = weatherData.filter((item) => item.city.key !== cityKey)
+    setWeatherData(newWeatherData)
+
+    enqueueSnackbar("Removed from favorites", {
+      variant: "info",
+      ContentProps: { className: "snackbar-content" }
+    })
+
+    if (newWeatherData.length === 0) {
+      enqueueSnackbar("No favorites left 💔", {
+        variant: "warning",
+        ContentProps: { className: "snackbar-content" }
+      })
+    }
+  }
 
 
   const fetchWeatherData = async (cityKey: string) => {
@@ -58,30 +88,46 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({ favoriteLocations }) => {
         {loading ? (
           <div className={classes.loading}>Loading favorites...</div>
         ) : weatherData.length === 0 ? (
-          <div>✅ FavoritesPage loaded — no data yet</div>
+          // <div>✅ FavoritesPage loaded — no data yet</div>
+          <div className={classes.noData}>
+            No favorites yet 💔<br />
+            Go back to the home page and add some!
+          </div>
           // <div className={classes.noData}>No data available</div>
         ) : (
           <div className={classes.favoritesArray}>
             {weatherData.map((item, index) => (
-              <Card sx={{ minWidth: 275 }} key={index}>
+              <Card sx={{
+                minWidth: 275,
+                maxWidth: 300,
+                borderRadius: 3, // ⭕ rounded corners
+                boxShadow: 3,    // ☁️ soft shadow
+                backgroundColor: "background.paper",
+                padding: 2
+              }} key={index}>
                 <CardContent>
                   <Typography variant="h5" component="div">
                     <div className={classes.FavoriteLocationCard}>
-                      <div className={classes.cityName}>{item.city.name}</div>
-  
+                      <div className={classes.cityHeader}>
+                        <div className={classes.cityName}>{item.city.name}</div>
+                        <IconButton
+                          onClick={() => removeFromFavorites(item.city.key)}
+                          aria-label="remove from favorites"
+                          size="small"
+                        >
+                          <FavoriteIcon sx={{ color: pink[500] }} />
+                        </IconButton>
+                      </div>
+
                       {item.weather ? (
                         <div className={classes.favoriteCurrentTemperature}>
                           {item.weather.Temperature.Metric.Value}°C
                         </div>
                       ) : (
-                        <div className={classes.favoriteCurrentTemperature}>
-                          N/A
-                        </div>
+                        <div className={classes.favoriteCurrentTemperature}>N/A</div>
                       )}
-  
-                      <div className={classes.countryName}>
-                        {item.city.country}
-                      </div>
+
+                      <div className={classes.countryName}>{item.city.country}</div>
                     </div>
                   </Typography>
                 </CardContent>
