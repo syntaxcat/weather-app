@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  max-width: 100vw; /* prevent breakout */
+  max-width: 100vw; 
   overflow-x: hidden;
   padding: 0 1rem;
   border-bottom: 1px solid black;
@@ -38,7 +38,6 @@
   align-items: center;
 }
 
-/* ✅ Responsive fix for small screens */
 @media (max-width: 480px) {
   .taskName {
     font-size: 1rem;
