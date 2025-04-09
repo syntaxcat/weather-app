@@ -52,7 +52,7 @@ const DailyForecast = (props: DailyForecastsProps) => {
         setTimeout(() => {
           setDailyForecasts(data.DailyForecasts)
           setLoading(false)
-        }, 1000) // 👈 1 second delay to let you see the spinner
+        }, 1000) 
       })
       .catch(() => {
         enqueueSnackbar("Error fetching daily forecasts. Please try again.", {
