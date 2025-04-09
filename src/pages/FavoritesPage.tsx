@@ -122,12 +122,11 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({ favoriteLocations }) => {
           <div className={classes.favoritesArray}>
             {weatherData.map((item, index) => (
               <Card
-                className={removingCardId === item.city.key ? classes.fadeOut : ""}
+                className={`${classes.favoriteCard} ${removingCardId === item.city.key ? classes.fadeOut : ""}`}
                 sx={{
                   minWidth: 275,
                   maxWidth: 300,
                   borderRadius: 3,
-                  boxShadow: 3,
                   backgroundColor: "background.paper",
                   padding: 2,
                   transition: "opacity 0.3s ease"

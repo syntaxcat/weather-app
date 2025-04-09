@@ -93,3 +93,20 @@
   color: #555;
   text-align: center;
 }
+
+.favoriteCard {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* .favoriteCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 12px rgba(192, 192, 192, 0.6); 
+  border: 1px solid rgba(192, 192, 192, 0.5);
+} */
+
+.favoriteCard:hover,
+.favoriteCard:active {
+  transform: translateY(-4px);
+  box-shadow: 0 0 12px rgba(192, 192, 192, 0.6);
+  border: 1px solid rgba(192, 192, 192, 0.5);
+}

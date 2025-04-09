@@ -29,6 +29,8 @@ a:hover {
 body {
   margin: 0;
   min-width: 320px;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 html,
