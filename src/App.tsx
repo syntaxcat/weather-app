@@ -5,15 +5,16 @@ import Box from "@mui/material/Box"
 import IconButton from "@mui/material/IconButton"
 import Brightness4Icon from "@mui/icons-material/Brightness4"
 import Brightness7Icon from "@mui/icons-material/Brightness7"
-
 import Tabs from "@mui/material/Tabs"
 import Tab from "@mui/material/Tab"
+import HomeIcon from "@mui/icons-material/Home"
+import FavoriteIcon from "@mui/icons-material/Favorite"
 
 import classes from "./App.module.css"
 import HomePage from "./pages/WeatherDetails"
 import FavoritesPage from "./pages/FavoritesPage"
 import { City } from "./types"
-import { Snackbar, SnackbarContent } from "@mui/material"
+import { Snackbar, SnackbarContent, useMediaQuery } from "@mui/material"
 import { useSnackbar } from "notistack"
 
 const DEFAULT_FAVORITES: City[] = [
@@ -57,11 +58,18 @@ function App() {
   const theme = useTheme()
   const colorMode = useContext(ColorModeContext)
   const location = useLocation()
+  const isMobile = useMediaQuery("(max-width: 600px)")
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const routes = ["/Favorites", "/"]
   const currentTab = routes.find((route) => route === location.pathname)
+
+  const tabSx = {
+    minWidth: { xs: "48px", sm: "90px" },
+    paddingX: { xs: 0.5, sm: 2 },
+    paddingY: { xs: 0.5, sm: 1 },
+  }
 
   return (
     <Box
@@ -81,33 +89,31 @@ function App() {
         <nav className={classes.headerNav}>
           <div className={classes.taskName}>Weather or Not ☁️</div>
           <div className={classes.navLinks}>
-            <div className={classes.toggleDarkMode}>
-              <IconButton
-                sx={{ ml: 1 }}
-                onClick={colorMode.toggleColorMode}
-                color="inherit"
-              >
-                {theme.palette.mode === "dark" ? (
-                  <Brightness7Icon />
-                ) : (
-                  <Brightness4Icon />
-                )}
-              </IconButton>
-            </div>
-
-            <Box sx={{ width: "100%", marginRight: "1rem" }}>
-              <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                <Tabs value={currentTab}>
-                  <Tab component={Link} value="/" to="/" label="Home" />
-                  <Tab
-                    component={Link}
-                    value="/Favorites"
-                    to="/Favorites"
-                    label="Favorites"
-                  />
-                </Tabs>
-              </Box>
-            </Box>
+            <Tabs value={currentTab} variant={isMobile ? "standard" : "fullWidth"}>
+              <Tab
+                icon={isMobile ? <HomeIcon /> : undefined}
+                label={isMobile ? undefined : "Home"}
+                component={Link}
+                sx={tabSx}
+                value="/"
+                to="/"
+              />
+              <Tab
+                icon={isMobile ? <FavoriteIcon /> : undefined}
+                label={isMobile ? undefined : "Favorites"}
+                component={Link}
+                sx={tabSx}
+                value="/Favorites"
+                to="/Favorites"
+              />
+            </Tabs>
+            <IconButton
+              onClick={colorMode.toggleColorMode}
+              color="inherit"
+              sx={{ ml: 1 }}
+            >
+              {theme.palette.mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
+            </IconButton>
           </div>
         </nav>
       </header>
