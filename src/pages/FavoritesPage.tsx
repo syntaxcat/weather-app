@@ -94,7 +94,7 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({ favoriteLocations }) => {
         if (!hasSeenToast && (favoriteLocations.some(city => city.key === "349727" || city.key === "226396"))) {
           enqueueSnackbar("✨ Added New York & Tokyo to your favorites!", {
             variant: "success",
-            ContentProps: { className: "snackbar-content" }
+            className: "snackbar-content" 
           })
           localStorage.setItem("HasSeenDefaultToast", "true")
         }

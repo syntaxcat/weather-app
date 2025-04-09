@@ -16,7 +16,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             maxSnack={4}
             anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             autoHideDuration={3000}
-            classes={{ containerRoot: 'my-snackbar' }}
+            className="my-snackbar"
           >
             <App />
           </SnackbarProvider>
