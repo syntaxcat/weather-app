@@ -39,7 +39,7 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({ favoriteLocations }) => {
         isLastItem ? "No favorites left 💔" : "Removed from favorites",
         {
           variant: isLastItem ? "warning" : "info",
-          ContentProps: { className: "snackbar-content" }
+          className: "snackbar-content"
         }
       )
     }, 300)
