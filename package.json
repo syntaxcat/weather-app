@@ -16,6 +16,7 @@
     "@mui/material": "^7.0.1",
     "@mui/styled-engine-sc": "^7.0.1",
     "@mui/x-date-pickers": "^7.28.3",
+    "express": "^5.1.0",
     "localforage": "^1.10.0",
     "match-sorter": "^8.0.0",
     "notistack": "^3.0.2",

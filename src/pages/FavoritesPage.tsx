@@ -146,7 +146,7 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({ favoriteLocations }) => {
                     <div className={classes.cityName}>{item.city.name}</div>
 
                     <div className={classes.favoriteCurrentTemperature}>
-                      {item.weather.Temperature.Metric.Value}°C
+                      {item.weather.Temperature.Metric?.Value}°C
                     </div>
 
                     {item.weather?.WeatherIcon && (
