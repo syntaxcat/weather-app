@@ -8,11 +8,30 @@
   padding: 10px;
 }
 
-.taskName {
+/* .taskName {
   margin-left: 1rem;
   display: flex;
   align-self: center;
   padding: 10px;
+} */
+
+.taskName {
+  margin-left: 1rem;
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  font-family: "Segoe UI", Inter, system-ui, sans-serif;
+  color: #4a90e2; /* or #1976d2 if you want a deeper blue */
+  white-space: nowrap;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.taskName:hover {
+  color: #1e88e5;
+  cursor: default;
 }
 
 .toggleDarkMode {
@@ -28,3 +47,10 @@
   border: 1px solid black;
   list-style: none;
 }
+
+/* @media (max-width: 480px) {
+  .taskName {
+    font-size: 1rem;
+    padding: 8px;
+  }
+} */

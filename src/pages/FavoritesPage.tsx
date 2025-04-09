@@ -22,30 +22,32 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({ favoriteLocations }) => {
   const [weatherData, setWeatherData] = useState<any[]>([])
   const { enqueueSnackbar } = useSnackbar()
 
-  console.log("📦 FavoritesPage mounted");
   const [loading, setLoading] = useState(true)
 
+  const [removingCardId, setRemovingCardId] = useState<string | null>(null)
+
   const removeFromFavorites = (cityKey: string) => {
-    const stored = localStorage.getItem("Favorites")
-    const favorites = stored ? JSON.parse(stored) : []
+    setRemovingCardId(cityKey)
 
-    const updated = favorites.filter((city: City) => city.key !== cityKey)
-    localStorage.setItem("Favorites", JSON.stringify(updated))
+    setTimeout(() => {
+      const stored = localStorage.getItem("Favorites")
+      const favorites = stored ? JSON.parse(stored) : []
+      const updated = favorites.filter((city: City) => city.key !== cityKey)
+      localStorage.setItem("Favorites", JSON.stringify(updated))
 
-    const newWeatherData = weatherData.filter((item) => item.city.key !== cityKey)
-    setWeatherData(newWeatherData)
+      const newWeatherData = weatherData.filter((item) => item.city.key !== cityKey)
+      setWeatherData(newWeatherData)
+      setRemovingCardId(null)
 
-    enqueueSnackbar("Removed from favorites", {
-      variant: "info",
-      ContentProps: { className: "snackbar-content" }
-    })
-
-    if (newWeatherData.length === 0) {
-      enqueueSnackbar("No favorites left 💔", {
-        variant: "warning",
-        ContentProps: { className: "snackbar-content" }
-      })
-    }
+      const isLastItem = newWeatherData.length === 0
+      enqueueSnackbar(
+        isLastItem ? "No favorites left 💔" : "Removed from favorites",
+        {
+          variant: isLastItem ? "warning" : "info",
+          ContentProps: { className: "snackbar-content" }
+        }
+      )
+    }, 300) 
   }
 
 
@@ -70,17 +72,14 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({ favoriteLocations }) => {
         setWeatherData(weatherResults)
       } catch (error) {
         console.error("Error fetching weather conditions:", error)
-        //TODO - snackBar
       } finally {
-        setLoading(false) // <- stop loading after API or error
+        setLoading(false)
       }
     }
 
     fetchData()
   }, [favoriteLocations])
 
-  console.log("loading:", loading)
-  console.log("📊 weatherData:", weatherData)
 
   return (
     <>
@@ -88,23 +87,23 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({ favoriteLocations }) => {
         {loading ? (
           <div className={classes.loading}>Loading favorites...</div>
         ) : weatherData.length === 0 ? (
-          // <div>✅ FavoritesPage loaded — no data yet</div>
           <div className={classes.noData}>
             No favorites yet 💔<br />
             Go back to the home page and add some!
           </div>
-          // <div className={classes.noData}>No data available</div>
         ) : (
           <div className={classes.favoritesArray}>
             {weatherData.map((item, index) => (
-              <Card sx={{
-                minWidth: 275,
-                maxWidth: 300,
-                borderRadius: 3, // ⭕ rounded corners
-                boxShadow: 3,    // ☁️ soft shadow
-                backgroundColor: "background.paper",
-                padding: 2
-              }} key={index}>
+              <Card className={removingCardId === item.city.key ? classes.fadeOut : ""}
+                sx={{
+                  minWidth: 275,
+                  maxWidth: 300,
+                  borderRadius: 3,
+                  boxShadow: 3,
+                  backgroundColor: "background.paper",
+                  padding: 2,
+                  transition: "opacity 0.3s ease"
+                }} key={index}>
                 <CardContent>
                   <Typography variant="h5" component="div">
                     <div className={classes.FavoriteLocationCard}>

@@ -73,3 +73,8 @@
   margin-top: 2rem;
   line-height: 1.6;
 }
+
+.fadeOut {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}

@@ -23,9 +23,6 @@ const FavoritesPageWrapper = () => {
   } else {
     favorites = JSON.parse(favoriteFromStorage)
   }
-  console.log("✅ FavoritesPageWrapper rendered with:", favorites)
-
-
   return <FavoritesPage favoriteLocations={favorites} />
 }
 
@@ -36,28 +33,28 @@ function App() {
   const colorMode = useContext(ColorModeContext)
   const location = useLocation()
 
-  const [errorMessage, setErrorMessage] = useState<string | null>(null) // Added error state
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const routes = ["/Favorites", "/"]
   const currentTab = routes.find((route) => route === location.pathname)
 
   return (
     <Box
-    sx={{
-      display: "flex",
-      flexDirection: "column",
-      width: "100%",
-      maxWidth: "100vw",        // ✅ prevent overflow
-      overflowX: "hidden",       // ✅ hide extra scroll
-      boxSizing: "border-box",
-      height: "100%",
-      bgcolor: "background.default",
-      color: "text.primary"
-    }}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        width: "100%",
+        maxWidth: "100vw",       
+        overflowX: "hidden",      
+        boxSizing: "border-box",
+        height: "100%",
+        bgcolor: "background.default",
+        color: "text.primary"
+      }}
     >
       <header>
         <nav className={classes.headerNav}>
-          <div className={classes.taskName}>weather task</div>
+          <div className={classes.taskName}>Weather or Not ☁️</div>
           <div className={classes.navLinks}>
             <div className={classes.toggleDarkMode}>
               <IconButton
@@ -127,7 +124,19 @@ export default function ToggleColorMode() {
     () =>
       createTheme({
         palette: {
-          mode
+          mode,
+          ...(mode === "light"
+            ? {
+                background: {
+                  default: "#f7f7f7",
+                  paper: "#ffffff"
+                },
+                text: {
+                  primary: "#222",
+                  secondary: "#555"
+                }
+              }
+            : {})
         }
       }),
     [mode]
