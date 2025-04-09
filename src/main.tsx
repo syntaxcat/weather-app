@@ -7,6 +7,8 @@ import React from "react"
 import ReactDOM from "react-dom/client"
 import App from "./App.tsx"
 import "./index.css"
+import { ApiLimitProvider } from './context/ApiLimitContext'; 
+
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -18,7 +20,10 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             autoHideDuration={3000}
             className="my-snackbar"
           >
+            <ApiLimitProvider>
             <App />
+            </ ApiLimitProvider>
+
           </SnackbarProvider>
       </BrowserRouter>
     </StyledEngineProvider>

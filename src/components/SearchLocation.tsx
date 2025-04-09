@@ -6,8 +6,9 @@ import { City } from "../types"
 import { Box, Typography } from "@mui/material"
 import { apiKey } from "../consts"
 import Grid from '@mui/material/Grid';
-
 import { useSnackbar } from "notistack"
+import { useApiLimit } from '../context/ApiLimitContext';
+
 
 const END_POINT =
   "https://dataservice.accuweather.com/locations/v1/cities/autocomplete"
@@ -21,50 +22,60 @@ const SearchLocation = (props: SearchLocationProps) => {
   const [inputValue, setInputValue] = useState("")
   const [options, setOptions] = useState<City[]>([])
 
-  // const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"))
-
   const { enqueueSnackbar } = useSnackbar()
-
-  const sendRequest = useCallback(function fetchLoctionsHandler(
-    userInput: string
-  ) {
+  const { setApiLimitReached } = useApiLimit() 
+  const sendRequest = useCallback(function fetchLocationsHandler(userInput: string) {
     fetch(`${END_POINT}?apikey=${apiKey}&q=${userInput}`)
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Network response was not ok")
+          if (response.status === 403) {
+            console.log("API limit reached:", true);  
+            setApiLimitReached(true); // Set API limit reached to true
+            enqueueSnackbar("API limit reached. Please refresh later (Free plan ❤️)", {
+              variant: "warning",
+            });
+          } else if (response.status === 503) {
+            enqueueSnackbar("Service unavailable. Please try again later.", {
+              variant: "error",
+            });
+          } else {
+            enqueueSnackbar("Error fetching locations. Please try again.", {
+              variant: "error",
+            });
+          }
+          return; 
         }
-        return response.json()
+        return response.json();
       })
       .then((data) => {
         const foundLocations = data.map((locationData: any) => {
           return {
             key: locationData.Key,
             name: locationData.LocalizedName,
-            country: locationData.Country.LocalizedName
-          }
-        })
-        setOptions(foundLocations)
+            country: locationData.Country.LocalizedName,
+          };
+        });
+        setOptions(foundLocations);
       })
       .catch(() => {
-        enqueueSnackbar("Error fetching locations. Please try again.", {
-          variant: "error"
-        })
-      })
-  },
-    [])
+        enqueueSnackbar("Network error. Please check your connection and try again.", {
+          variant: "error",
+        });
+      });
+  }, [setApiLimitReached]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       sendRequest(inputValue)
-    }, 500)
+    }, 500);
     return () => {
-      clearTimeout(timer)
+      clearTimeout(timer);
     }
-  }, [inputValue])
+  }, [inputValue]);
 
   const locationChangeHandler = (_event: any, newValue: City | null) => {
-    props.onSelectCity(newValue)
-  }
+    props.onSelectCity(newValue);
+  };
 
   return (
     <div>
@@ -79,16 +90,15 @@ const SearchLocation = (props: SearchLocationProps) => {
         value={props.selectedCity}
         noOptionsText="No locations"
         isOptionEqualToValue={(option, value) => {
-          return option.key === value.key
+          return option.key === value.key;
         }}
         onChange={locationChangeHandler}
         onInputChange={(_event, newInputValue) => {
-          setInputValue(newInputValue)
+          setInputValue(newInputValue);
         }}
         renderInput={(params) => (
           <TextField {...params} label="Add a location" fullWidth />
         )}
-        // renderOption={(props, option) => {
         renderOption={(props: React.HTMLAttributes<HTMLLIElement>, option: City) => {
           return (
             <li {...props} key={option.key}>
@@ -96,7 +106,7 @@ const SearchLocation = (props: SearchLocationProps) => {
                 <Grid
                   component="div"
                   sx={{ display: "flex", width: 44 }}
-                  {...({ item: true } as any)} // 👈 force TS to allow 'item'
+                  {...({ item: true } as any)} // force TS to allow 'item'
                 >
                   <LocationOnIcon sx={{ color: "text.secondary" }} />
                 </Grid>
@@ -104,7 +114,7 @@ const SearchLocation = (props: SearchLocationProps) => {
                 <Grid
                   component="div"
                   sx={{ width: "calc(100% - 44px)", wordWrap: "break-word" }}
-                  {...({ item: true } as any)} // 👈 same here
+                  {...({ item: true } as any)}
                 >
                   <Box component="span">{option.name}</Box>
                   <Typography variant="body2" color="text.secondary">
@@ -113,11 +123,11 @@ const SearchLocation = (props: SearchLocationProps) => {
                 </Grid>
               </Grid>
             </li>
-          )
+          );
         }}
       />
     </div>
-  )
-}
+  );
+};
 
-export default SearchLocation
+export default SearchLocation;

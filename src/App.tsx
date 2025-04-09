@@ -16,6 +16,12 @@ import FavoritesPage from "./pages/FavoritesPage"
 import { City } from "./types"
 import { Snackbar, SnackbarContent, useMediaQuery } from "@mui/material"
 import { useSnackbar } from "notistack"
+import ApiLimitMessage from './components/ApiLimitMessage'
+import Footer from './components/Footer'; // Import Footer
+
+
+
+
 
 const DEFAULT_FAVORITES: City[] = [
   { key: "349727", name: "New York", country: "USA" },
@@ -39,7 +45,7 @@ const FavoritesPageWrapper = () => {
   return <FavoritesPage favoriteLocations={favorites} />
 }
 
-const ColorModeContext = createContext({ toggleColorMode: () => {} })
+const ColorModeContext = createContext({ toggleColorMode: () => { } })
 
 function App() {
   const { enqueueSnackbar } = useSnackbar()
@@ -81,10 +87,13 @@ function App() {
         overflowX: "hidden",
         boxSizing: "border-box",
         height: "100%",
+        minHeight: "100vh",
         bgcolor: "background.default",
         color: "text.primary"
       }}
     >
+      <ApiLimitMessage />
+
       <header>
         <nav className={classes.headerNav}>
           <div className={classes.taskName}>Weather or Not ☁️</div>
@@ -123,7 +132,8 @@ function App() {
           p: 3,
           display: "flex",
           alignItems: "center",
-          flexDirection: "column"
+          flexDirection: "column",
+          flexGrow: 1,
         }}
       >
         <Outlet />
@@ -136,6 +146,7 @@ function App() {
       >
         <SnackbarContent message={errorMessage} />
       </Snackbar>
+      <Footer />
     </Box>
   )
 }
@@ -158,15 +169,15 @@ export default function ToggleColorMode() {
           mode,
           ...(mode === "light"
             ? {
-                background: {
-                  default: "#f7f7f7",
-                  paper: "#ffffff"
-                },
-                text: {
-                  primary: "#222",
-                  secondary: "#555"
-                }
+              background: {
+                default: "#f7f7f7",
+                paper: "#ffffff"
+              },
+              text: {
+                primary: "#222",
+                secondary: "#555"
               }
+            }
             : {})
         }
       }),
@@ -174,6 +185,7 @@ export default function ToggleColorMode() {
   )
 
   return (
+
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <Routes>
