@@ -2,11 +2,9 @@ import { useState, useEffect } from "react"
 import classes from "./FavoritesPage.module.css"
 import Card from "@mui/material/Card"
 import CardContent from "@mui/material/CardContent"
-import Typography from "@mui/material/Typography"
 import { City } from "../types"
 import { apiKey } from "../consts"
 import { pink } from "@mui/material/colors"
-
 import IconButton from "@mui/material/IconButton"
 import FavoriteIcon from "@mui/icons-material/Favorite"
 import { useSnackbar } from "notistack"
@@ -18,12 +16,9 @@ interface FavoritesPageProps {
 const END_POINT = "https://dataservice.accuweather.com/currentconditions/v1/"
 
 const FavoritesPage: React.FC<FavoritesPageProps> = ({ favoriteLocations }) => {
-
   const [weatherData, setWeatherData] = useState<any[]>([])
   const { enqueueSnackbar } = useSnackbar()
-
   const [loading, setLoading] = useState(true)
-
   const [removingCardId, setRemovingCardId] = useState<string | null>(null)
 
   const removeFromFavorites = (cityKey: string) => {
@@ -47,16 +42,39 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({ favoriteLocations }) => {
           ContentProps: { className: "snackbar-content" }
         }
       )
-    }, 300) 
+    }, 300)
   }
 
+  const CACHE_TTL = 60 * 60 * 1000 // 1 hour in milliseconds
 
   const fetchWeatherData = async (cityKey: string) => {
-    const response = await fetch(`${END_POINT}/${cityKey}?apikey=${apiKey}`)
+    const cacheKey = `weather-${cityKey}`
+    const cached = localStorage.getItem(cacheKey)
+
+    if (cached) {
+      const { data, timestamp } = JSON.parse(cached)
+      if (Date.now() - timestamp < CACHE_TTL) {
+        console.log("✅ Using cached weather for:", cityKey)
+        return data
+      } else {
+        console.log("⚠️ Cache expired for:", cityKey)
+      }
+    }
+
+    const response = await fetch(
+      `${END_POINT}/${cityKey}?apikey=${apiKey}`
+    )
+
     if (!response.ok) {
       throw new Error("Network response was not ok")
     }
+
     const data = await response.json()
+    localStorage.setItem(
+      cacheKey,
+      JSON.stringify({ data: data[0], timestamp: Date.now() })
+    )
+
     return data[0]
   }
 
@@ -70,6 +88,16 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({ favoriteLocations }) => {
 
         const weatherResults = await Promise.all(fetchPromises)
         setWeatherData(weatherResults)
+
+        // ✅ Show toast only once for first-time users
+        const hasSeenToast = localStorage.getItem("HasSeenDefaultToast")
+        if (!hasSeenToast && (favoriteLocations.some(city => city.key === "349727" || city.key === "226396"))) {
+          enqueueSnackbar("✨ Added New York & Tokyo to your favorites!", {
+            variant: "success",
+            ContentProps: { className: "snackbar-content" }
+          })
+          localStorage.setItem("HasSeenDefaultToast", "true")
+        }
       } catch (error) {
         console.error("Error fetching weather conditions:", error)
       } finally {
@@ -79,7 +107,6 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({ favoriteLocations }) => {
 
     fetchData()
   }, [favoriteLocations])
-
 
   return (
     <>
@@ -94,7 +121,8 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({ favoriteLocations }) => {
         ) : (
           <div className={classes.favoritesArray}>
             {weatherData.map((item, index) => (
-              <Card className={removingCardId === item.city.key ? classes.fadeOut : ""}
+              <Card
+                className={removingCardId === item.city.key ? classes.fadeOut : ""}
                 sx={{
                   minWidth: 275,
                   maxWidth: 300,
@@ -103,32 +131,41 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({ favoriteLocations }) => {
                   backgroundColor: "background.paper",
                   padding: 2,
                   transition: "opacity 0.3s ease"
-                }} key={index}>
+                }}
+                key={index}
+              >
                 <CardContent>
-                  <Typography variant="h5" component="div">
-                    <div className={classes.FavoriteLocationCard}>
-                      <div className={classes.cityHeader}>
-                        <div className={classes.cityName}>{item.city.name}</div>
-                        <IconButton
-                          onClick={() => removeFromFavorites(item.city.key)}
-                          aria-label="remove from favorites"
-                          size="small"
-                        >
-                          <FavoriteIcon sx={{ color: pink[500] }} />
-                        </IconButton>
-                      </div>
+                  <div className={classes.weatherCardContent}>
+                    <IconButton
+                      onClick={() => removeFromFavorites(item.city.key)}
+                      aria-label="remove from favorites"
+                      size="small"
+                    >
+                      <FavoriteIcon sx={{ color: pink[500] }} />
+                    </IconButton>
 
-                      {item.weather ? (
-                        <div className={classes.favoriteCurrentTemperature}>
-                          {item.weather.Temperature.Metric.Value}°C
-                        </div>
-                      ) : (
-                        <div className={classes.favoriteCurrentTemperature}>N/A</div>
-                      )}
+                    <div className={classes.cityName}>{item.city.name}</div>
 
-                      <div className={classes.countryName}>{item.city.country}</div>
+                    <div className={classes.favoriteCurrentTemperature}>
+                      {item.weather.Temperature.Metric.Value}°C
                     </div>
-                  </Typography>
+
+                    {item.weather?.WeatherIcon && (
+                      <img
+                        className={classes.weatherIconImg}
+                        src={
+                          item.weather.WeatherIcon < 10
+                            ? `https://developer.accuweather.com/sites/default/files/0${item.weather.WeatherIcon}-s.png`
+                            : `https://developer.accuweather.com/sites/default/files/${item.weather.WeatherIcon}-s.png`
+                        }
+                        alt="Weather icon"
+                      />
+                    )}
+
+                    <div className={classes.weatherText}>{item.weather.WeatherText}</div>
+
+                    <div className={classes.countryName}>{item.city.country}</div>
+                  </div>
                 </CardContent>
               </Card>
             ))}

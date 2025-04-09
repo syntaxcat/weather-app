@@ -1,4 +1,4 @@
-import { useState, useMemo, createContext, useContext } from "react"
+import { useState, useMemo, createContext, useContext, useEffect } from "react"
 import { Routes, Route, Outlet, Link, useLocation } from "react-router-dom"
 import { ThemeProvider, createTheme, useTheme } from "@mui/material/styles"
 import Box from "@mui/material/Box"
@@ -14,21 +14,46 @@ import HomePage from "./pages/WeatherDetails"
 import FavoritesPage from "./pages/FavoritesPage"
 import { City } from "./types"
 import { Snackbar, SnackbarContent } from "@mui/material"
+import { useSnackbar } from "notistack"
+
+const DEFAULT_FAVORITES: City[] = [
+  { key: "349727", name: "New York", country: "USA" },
+  { key: "226396", name: "Tokyo", country: "Japan" }
+]
 
 const FavoritesPageWrapper = () => {
-  const favoriteFromStorage = localStorage.getItem("Favorites")
-  let favorites: City[]
-  if (favoriteFromStorage === null) {
-    favorites = []
-  } else {
-    favorites = JSON.parse(favoriteFromStorage)
-  }
+  const [favorites, setFavorites] = useState<City[]>([])
+
+  useEffect(() => {
+    const favoriteFromStorage = localStorage.getItem("Favorites")
+
+    if (!favoriteFromStorage) {
+      localStorage.setItem("Favorites", JSON.stringify(DEFAULT_FAVORITES))
+      setFavorites(DEFAULT_FAVORITES)
+    } else {
+      setFavorites(JSON.parse(favoriteFromStorage))
+    }
+  }, [])
+
   return <FavoritesPage favoriteLocations={favorites} />
 }
 
-const ColorModeContext = createContext({ toggleColorMode: () => { } })
+const ColorModeContext = createContext({ toggleColorMode: () => {} })
 
 function App() {
+  const { enqueueSnackbar } = useSnackbar()
+
+  useEffect(() => {
+    const handler = (e: any) => {
+      enqueueSnackbar(e.detail.text, {
+        variant: e.detail.type || "default"
+      })
+    }
+
+    window.addEventListener("show-msg", handler)
+    return () => window.removeEventListener("show-msg", handler)
+  }, [])
+
   const theme = useTheme()
   const colorMode = useContext(ColorModeContext)
   const location = useLocation()
@@ -44,8 +69,8 @@ function App() {
         display: "flex",
         flexDirection: "column",
         width: "100%",
-        maxWidth: "100vw",       
-        overflowX: "hidden",      
+        maxWidth: "100vw",
+        overflowX: "hidden",
         boxSizing: "border-box",
         height: "100%",
         bgcolor: "background.default",
